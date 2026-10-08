@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ezeepay® [ R.M Digital Centre ] - Master Portal</title>
+  <title>ezeepay® [ R.M Digital Centre ] - Master Terminal</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
@@ -12,7 +12,7 @@
       --accent: #00c853;
       --bg: #f4f6f9;
       --surface: #ffffff;
-      --border: #e2e8f0;
+      --border: #cbd5e1;
       --text: #0f172a;
       --sub: #64748b;
     }
@@ -23,121 +23,120 @@
     /* HEADER */
     .top-header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: #fff; padding: 12px 24px; position: sticky; top: 0; z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      color: #fff; padding: 14px 20px; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
-    .header-shell { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+    .header-shell { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; width: 100%; }
     .brand-group { display: flex; align-items: center; gap: 14px; }
-    .nav-toggle { font-size: 22px; cursor: pointer; color: #fff; padding: 6px; border-radius: 6px; }
-    .nav-toggle:hover { background: rgba(255,255,255,0.15); }
-    .brand-title { font-size: 20px; font-weight: 900; letter-spacing: 0.5px; }
-    .brand-title span { color: #ffca28; }
-    .brand-tag { font-size: 13px; color: #e0e7ff; background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 6px; font-weight: 700; margin-left: 6px; }
+    
+    .nav-toggle-btn {
+      font-size: 22px; cursor: pointer; color: #fff; background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25); padding: 6px 12px; border-radius: 8px;
+    }
+    .nav-toggle-btn:hover { background: rgba(255,255,255,0.3); }
 
-    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .brand-title { font-size: 19px; font-weight: 900; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+    .brand-title span { color: #ffca28; }
+    .brand-tag { font-size: 12px; color: #e0e7ff; background: rgba(255,255,255,0.18); padding: 4px 8px; border-radius: 6px; font-weight: 700; }
+
+    .header-actions { display: flex; align-items: center; gap: 10px; }
     .lang-box {
       background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.3);
-      padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; outline: none; cursor: pointer;
+      padding: 7px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; outline: none; cursor: pointer;
     }
     .lang-box option { background: #2a0845; color: #fff; }
 
     .btn-top {
-      padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 800; border: none; cursor: pointer;
-      display: flex; align-items: center; gap: 6px; transition: 0.2s;
+      padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; border: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;
     }
-    .btn-member-login { background: #00c853; color: #000; display: none; } /* Hidden until approved */
+    .btn-member-login { background: var(--accent); color: #000; display: none; }
+    .btn-member-login:hover { background: #00e676; }
     .btn-auth-trigger { background: #ff9800; color: #000; }
     .btn-auth-trigger:hover { background: #fb8c00; }
 
     /* TICKER */
-    .ticker-bar { background: #e8f5e9; color: #1b5e20; font-size: 12px; font-weight: 700; padding: 8px 24px; border-bottom: 1px solid #c8e6c9; }
+    .ticker-bar { background: #e8f5e9; color: #1b5e20; font-size: 12px; font-weight: 700; padding: 8px 20px; border-bottom: 1px solid #c8e6c9; }
 
-    /* FULL WIDTH CONTAINER */
-    .portal-main { max-width: 1400px; margin: 0 auto; padding: 20px; }
+    /* PORTAL MAIN */
+    .portal-main { max-width: 1400px; margin: 0 auto; padding: 20px; width: 100%; }
 
-    /* PROMO STRIP */
+    /* PROMO BANNER */
     .promo-banner {
       background: linear-gradient(135deg, #4a148c 0%, #1e1b4b 100%); color: #fff;
-      border-radius: 16px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;
+      border-radius: 16px; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 22px; box-shadow: 0 4px 14px rgba(74, 20, 140, 0.15);
     }
 
-    /* ONBOARDING ACTION HUBS */
+    /* APPLICATION DECK (AUTO MANAGED) */
     .application-deck { display: none; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+    @media (max-width: 768px) { .application-deck { grid-template-columns: 1fr; } }
     .apply-card {
-      background: #fff; border: 1.5px dashed var(--primary); padding: 18px 22px; border-radius: 14px;
-      cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      background: #fff; border: 1.5px dashed var(--primary); padding: 18px 20px; border-radius: 14px;
+      cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 16px;
     }
     .apply-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
     .apply-icon {
-      width: 50px; height: 50px; border-radius: 14px; background: #ede7f6;
-      display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary);
+      width: 48px; height: 48px; border-radius: 14px; background: #ede7f6;
+      display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary); flex-shrink: 0;
     }
 
     .approval-active-banner {
-      background: #ecfdf5; border: 1.5px solid #059669; border-radius: 14px; padding: 18px 24px;
-      margin-bottom: 22px; display: none; align-items: center; justify-content: space-between;
+      background: #ecfdf5; border: 1.5px solid #059669; border-radius: 14px; padding: 18px 22px;
+      margin-bottom: 22px; display: none; align-items: center; justify-content: space-between; gap: 14px;
     }
 
-    /* SERVICE CATEGORIES (FULL-WIDTH 3D DESKTOP LAYOUT) */
-    .category-section { background: var(--surface); border-radius: 16px; padding: 24px; border: 1px solid var(--border); margin-bottom: 22px; box-shadow: 0 1px 4px rgba(0,0,0,0.03); }
-    .cat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
-    .cat-head h4 { font-size: 16px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    /* CATEGORIES & TILES */
+    .category-section { background: var(--surface); border-radius: 16px; padding: 22px; border: 1px solid var(--border); margin-bottom: 22px; }
+    .cat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+    .cat-head h4 { font-size: 15px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
 
     .service-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
     @media (max-width: 1024px) { .service-grid { grid-template-columns: repeat(4, 1fr); } }
-    @media (max-width: 640px) { .service-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px) { .service-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; } }
 
     .service-tile {
       display: flex; flex-direction: column; align-items: center; text-align: center;
-      padding: 14px 8px; border-radius: 14px; cursor: pointer; transition: 0.25s;
-      border: 1px solid transparent;
+      padding: 12px 6px; border-radius: 14px; cursor: pointer; transition: 0.2s;
     }
-    .service-tile:hover { background: #f8fafc; border-color: #cbd5e1; transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.06); }
+    .service-tile:hover { background: #f8fafc; transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
     .icon-3d {
-      width: 52px; height: 52px; border-radius: 16px; background: #ede7f6;
-      display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary);
-      margin-bottom: 8px; transition: 0.2s; box-shadow: 0 3px 6px rgba(74,20,140,0.1);
+      width: 50px; height: 50px; border-radius: 16px; background: #ede7f6;
+      display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary);
+      margin-bottom: 8px; transition: 0.2s;
     }
     .service-tile:hover .icon-3d { transform: scale(1.08); background: #d1c4e9; }
-    .tile-text { font-size: 12px; font-weight: 700; color: #1e293b; line-height: 1.25; }
-    .tile-rate { font-size: 10px; font-weight: 800; color: #16a34a; margin-top: 4px; }
+    .tile-text { font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.25; }
+    .tile-rate { font-size: 9px; font-weight: 800; color: #16a34a; margin-top: 4px; }
 
-    /* SLIDE-OUT LEFT PROFILE DRAWER */
+    /* SLIDE DRAWER */
     .drawer-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 1500;
+      display: none;
     }
-    .drawer-overlay.open { opacity: 1; pointer-events: auto; }
     .side-drawer {
       position: fixed; top: 0; left: -320px; width: 300px; height: 100vh;
-      background: #fff; z-index: 2001; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 4px 0 20px rgba(0,0,0,0.15); display: flex; flex-direction: column; padding: 20px;
+      background: #fff; z-index: 1501; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 4px 0 20px rgba(0,0,0,0.25); display: flex; flex-direction: column; padding: 20px;
     }
-    .side-drawer.open { left: 0; }
+    .side-drawer.show { left: 0; }
     .drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 16px; }
-    .drawer-profile { text-align: center; padding-bottom: 16px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
-    .drawer-avatar {
-      width: 64px; height: 64px; border-radius: 50%; background: #ede7f6; color: var(--primary);
-      display: inline-flex; align-items: center; justify-content: center; font-size: 28px;
-      margin-bottom: 8px; border: 2px solid var(--primary);
-    }
 
     .drawer-menu { list-style: none; display: flex; flex-direction: column; gap: 8px; }
     .drawer-item {
       padding: 12px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; color: var(--sub);
       display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.2s;
     }
-    .drawer-item:hover, .drawer-item.active { background: #ede7f6; color: var(--primary); }
+    .drawer-item:hover { background: #ede7f6; color: var(--primary); }
 
     /* MODAL WINDOWS */
     .modal-overlay {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65);
-      z-index: 3000; align-items: center; justify-content: center; padding: 16px;
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      z-index: 2000; align-items: center; justify-content: center; padding: 16px;
     }
     .modal-box {
       background: #fff; width: 100%; max-width: 520px; border-radius: 18px; padding: 24px;
-      max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
     .m-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
     
@@ -166,34 +165,36 @@
   <header class="top-header">
     <div class="header-shell">
       <div class="brand-group">
-        <i class="fa-solid fa-bars nav-toggle" onclick="toggleDrawer()" title="Open Profile Menu"></i>
+        <button type="button" class="nav-toggle-btn" onclick="openDrawer()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
         <div class="brand-title">
           <i class="fa-solid fa-shield-halved"></i> ezeepay® <span class="brand-tag">[ R.M Digital Centre ]</span>
         </div>
       </div>
 
       <div class="header-actions">
-        <!-- LANGUAGE SELECTION (EN, HI, BN) -->
+        <!-- 3 LANGUAGES -->
         <select class="lang-box" id="langSelect" onchange="switchLanguage()">
           <option value="en">English</option>
           <option value="hi">हिंदी</option>
           <option value="bn">বাংলা</option>
         </select>
 
-        <!-- MEMBER LOGIN (ONLY VISIBLE ONCE APPROVED) -->
-        <button class="btn-top btn-member-login" id="btnTopMemberLogin" onclick="openMemberLogin()">
+        <!-- MEMBER LOGIN (VISIBLE ONLY AFTER APPROVAL) -->
+        <button type="button" class="btn-top btn-member-login" id="btnTopMemberLogin" onclick="openMemberLogin()">
           <i class="fa-solid fa-right-to-bracket"></i> <span id="txt-member-login">Member Login</span>
         </button>
 
-        <!-- VISITOR AUTHENTICATION / REGISTRATION TRIGGER -->
-        <button class="btn-top btn-auth-trigger" id="btnTopAuth" onclick="triggerAuth()">
+        <!-- VISITOR AUTHENTICATION TRIGGER -->
+        <button type="button" class="btn-top btn-auth-trigger" id="btnTopAuth" onclick="openAuthModal()">
           <i class="fa-solid fa-user-circle"></i> <span id="headerAuthLabel">New Registration</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- TICKER BAR -->
+  <!-- TICKER -->
   <div class="ticker-bar">
     <div style="max-width: 1400px; margin: 0 auto;">
       <marquee scrollamount="5" id="liveTicker">
@@ -205,7 +206,7 @@
   <!-- MAIN DASHBOARD -->
   <main class="portal-main">
 
-    <!-- PROMO OFFER BANNER -->
+    <!-- PROMO BANNER -->
     <section class="promo-banner">
       <div>
         <h3 style="font-size: 17px; font-weight:800;" id="txt-promo-title">Super Prime Offer 2026</h3>
@@ -214,9 +215,9 @@
       <button style="padding: 8px 16px; background:#ff9800; border:none; border-radius:8px; font-weight:800; cursor:pointer;" onclick="openMemberLogin()">Avail Offer</button>
     </section>
 
-    <!-- ONBOARDING APPLICATION DECK (HIDDEN INITIALLY, SHOWN AFTER REGISTER, HIDDEN ON APPROVAL) -->
+    <!-- ONBOARDING APPLICATION DECK (SHOWN ONLY AFTER REGISTRATION) -->
     <section class="application-deck" id="applyActionSection">
-      <div class="apply-card" onclick="openRetailerApply()">
+      <div class="apply-card" onclick="openRetailerModal()">
         <div class="apply-icon"><i class="fa-solid fa-store"></i></div>
         <div>
           <h4 style="font-size: 14px; font-weight:800; color:var(--primary);" id="txt-ret-head">Apply New Retailer ID</h4>
@@ -224,7 +225,7 @@
         </div>
       </div>
 
-      <div class="apply-card" onclick="openDistributorApply()">
+      <div class="apply-card" onclick="openDistributorModal()">
         <div class="apply-icon" style="background:#fce4ec; color:#c2185b;"><i class="fa-solid fa-building-shield"></i></div>
         <div>
           <h4 style="font-size: 14px; font-weight:800; color:#c2185b;" id="txt-dist-head">Apply Distributor Franchise</h4>
@@ -245,7 +246,7 @@
       <button style="padding:10px 18px; background:#059669; color:#fff; border:none; border-radius:8px; font-weight:800; cursor:pointer;" onclick="openMemberLogin()">Open Terminal Desk</button>
     </section>
 
-    <!-- 1. FAVOURITE BOX (WIDE 6-COLUMN GRID) -->
+    <!-- 1. FAVOURITE BOX -->
     <div class="category-section">
       <div class="cat-head">
         <h4><i class="fa-solid fa-star" style="color:#ff9800;"></i> <span id="head-fav">Favourite Box</span></h4>
@@ -285,7 +286,7 @@
       </div>
     </div>
 
-    <!-- 2. BC BANKING SERVICES (WIDE 6-COLUMN GRID) -->
+    <!-- 2. BC BANKING SERVICES -->
     <div class="category-section">
       <div class="cat-head">
         <h4><i class="fa-solid fa-building-columns"></i> <span id="head-bc">BC Banking Services</span></h4>
@@ -330,38 +331,39 @@
 
   </main>
 
-  <!-- SLIDE DRAWER (COLLAPSIBLE PROFILE & CONTROLS) -->
-  <div class="drawer-overlay" id="drawerBackdrop" onclick="toggleDrawer()"></div>
+  <!-- SLIDE DRAWER -->
+  <div class="drawer-overlay" id="drawerBackdrop" onclick="closeDrawer()"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
       <div style="font-size:16px; font-weight:800; color:var(--primary);">Control Panel</div>
-      <i class="fa-solid fa-xmark" style="font-size:18px; cursor:pointer;" onclick="toggleDrawer()"></i>
+      <i class="fa-solid fa-xmark" style="font-size:20px; cursor:pointer;" onclick="closeDrawer()"></i>
     </div>
 
-    <div class="drawer-profile">
-      <div class="drawer-avatar"><i class="fa-solid fa-user-tie"></i></div>
+    <div style="text-align:center; padding-bottom:16px; border-bottom:1px solid var(--border); margin-bottom:14px;">
+      <div style="width:60px; height:60px; border-radius:50%; background:#ede7f6; color:var(--primary); display:inline-flex; align-items:center; justify-content:center; font-size:26px; border:2px solid var(--primary); margin-bottom:8px;">
+        <i class="fa-solid fa-user-tie"></i>
+      </div>
       <div style="font-size:15px; font-weight:800;" id="drawerName">Rahamtulla Mondal</div>
       <div style="font-size:12px; color:var(--sub);" id="drawerPhone">Master Hub Operator</div>
       <div style="font-size:11px; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:12px; font-weight:700; display:inline-block; margin-top:6px;" id="drawerBadge">Admin Verified</div>
     </div>
 
     <ul class="drawer-menu">
-      <li class="drawer-item active" onclick="toggleDrawer()"><i class="fa-solid fa-house"></i> Dashboard</li>
-      <li class="drawer-item" onclick="toggleDrawer(); openAdminModal();"><i class="fa-solid fa-user-shield"></i> Super Admin Desk</li>
-      <li class="drawer-item" onclick="toggleDrawer(); openSupportModal();"><i class="fa-solid fa-headset"></i> Support Helpline</li>
-      <li class="drawer-item" onclick="resetUser()"><i class="fa-solid fa-rotate-left"></i> Reset / Logout</li>
+      <li class="drawer-item" onclick="closeDrawer()"><i class="fa-solid fa-house"></i> Dashboard</li>
+      <li class="drawer-item" onclick="closeDrawer(); openAdminModal();"><i class="fa-solid fa-user-shield"></i> Super Admin Desk</li>
+      <li class="drawer-item" onclick="closeDrawer(); openSupportModal();"><i class="fa-solid fa-headset"></i> Support Helpline</li>
+      <li class="drawer-item" onclick="resetUser()"><i class="fa-solid fa-rotate-left"></i> Reset Session</li>
     </ul>
   </aside>
 
-  <!-- MODAL: REGISTRATION & DIRECT PASSWORD SETUP -->
+  <!-- MODAL: REGISTRATION & DIRECT TOKEN -->
   <div id="authModal" class="modal-overlay">
     <div class="modal-box">
       <div class="m-top">
-        <h4 style="font-size:16px; font-weight:800; color:var(--primary);">Visitor Registration & Security Key</h4>
+        <h4 style="font-size:16px; font-weight:800; color:var(--primary);">Visitor Quick Registration</h4>
         <i class="fa-solid fa-xmark" style="font-size:18px; cursor:pointer;" onclick="closeAllModals()"></i>
       </div>
 
-      <!-- STEP 1: NAME, MOBILE & CUSTOM PASSWORD -->
       <div id="authStep1">
         <div class="field-row">
           <label>Your Full Name <span>*</span></label>
@@ -373,9 +375,11 @@
         </div>
         <div class="field-row">
           <label>Set Access Password <span>*</span></label>
-          <input type="password" id="regPass" placeholder="Apna naya password banayein" required>
+          <input type="password" id="regPass" placeholder="Naya password banayein" required>
         </div>
-        <button class="btn-submit-main" onclick="proceedToVerification()">GENERATE SECURE HANDSHAKE TOKEN</button>
+        <button type="button" class="btn-submit-main" onclick="proceedToVerification()">GENERATE SECURE HANDSHAKE TOKEN</button>
       </div>
 
-     
+      <div id="authStep2" style="display:none; text-align:center;">
+        <p style="font-size:13px; color:var(--sub); margin-bottom:8px;">Encrypted Gateway Token Generated:</p>
+        <div id="generatedOtpToken" style="font-size:24px; font-weight:900; letter-spacing:6px; color:#2e7d32; margin-botto
