@@ -143,7 +143,7 @@
 
 <div class="portal-shell">
 
-  <!-- 1. CYBER VAULT LOGIN OVERLAY -->
+  <!-- 1. CYBER VAULT LOGIN (AUTO-FILL OTP) -->
   <div id="vaultGate" class="vault-screen">
     <div class="bio-ring" id="bioBox"><i class="fa-solid fa-fingerprint"></i></div>
     
@@ -157,7 +157,7 @@
     <div class="vault-box" id="stepOtp" style="display: none;">
       <h3 style="font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 4px;">Biometric Verification</h3>
       <p style="font-size: 12px; color: #00e676; text-align: center; margin-bottom: 14px;">OTP Sent to <span id="numTarget"></span></p>
-      <input type="text" id="otpInput" class="v-input" placeholder="Enter 6-Digit OTP (Demo: 123456)" maxlength="6" style="text-align: center; letter-spacing: 4px; font-weight: 800;">
+      <input type="text" id="otpInput" class="v-input" placeholder="6-Digit OTP" maxlength="6" style="text-align: center; letter-spacing: 4px; font-weight: 800;">
       <div id="scanStatus" style="font-size: 12px; color: #00e676; margin-bottom: 10px; text-align: center; display: none;">Authenticating Node Session...</div>
       <button class="v-btn" onclick="verifyAndUnlock()">AUTHENTICATE & ENTER</button>
       <div style="text-align: center; margin-top: 10px;">
@@ -166,7 +166,7 @@
     </div>
   </div>
 
-  <!-- 2. TOP HEADER -->
+  <!-- 2. HEADER -->
   <header class="header-bar">
     <div class="max-bound">
       <div class="header-content">
@@ -383,4 +383,5 @@
 
 </div>
 
-<!-- UNIFIED
+<!-- UNIFIED MODAL -->
+<div id
