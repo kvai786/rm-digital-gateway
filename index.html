@@ -603,48 +603,79 @@
     }
 
     // FORM SUBMISSIONS
-    function submitRetailer() {
-      var shop = document.getElementById('fRetShop').value.trim();
-      var pan = document.getElementById('fRetPan').value.trim();
-      var pin = document.getElementById('fRetPin').value.trim();
+    // APPROVED USERS DATABASE
+var approvedUsers = JSON.parse(localStorage.getItem('rm_approved_users')) || [];
 
-      if(!shop || !pan || !pin) {
-        alert('Kripya saare required fields bharein.');
-        return;
-      }
+// STRICT RETAILER FORM SUBMIT
+function submitRetailer() {
+  var shop = document.getElementById('fRetShop').value.trim();
+  var pan = document.getElementById('fRetPan').value.trim().toUpperCase();
+  var aadh = document.getElementById('fRetIdentity').value.trim();
+  var pin = document.getElementById('fRetPin').value.trim();
 
-      pendingApp = {
-        type: 'Retailer',
-        name: currentSession.name,
-        phone: currentSession.phone,
-        detail: shop + ' (Pin: ' + pin + ')',
-        pan: pan
-      };
-      localStorage.setItem('rm_app', JSON.stringify(pendingApp));
-      alert('Application Submitted! Super Admin review ke baad ID live hogi.');
-      closeModals();
-    }
+  var panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+  var aadhRegex = /^[0-9]{12}$/;
+  var pinRegex = /^[0-9]{6}$/;
 
-    function submitDistributor() {
-      var firm = document.getElementById('fDistFirm').value.trim();
-      var dist = document.getElementById('fDistDistrict').value.trim();
+  if (!shop || shop.length < 3) {
+    alert('Kripya sahi Dukan ka naam bharein (Kam se kam 3 akshar).');
+    return;
+  }
+  if (!panRegex.test(pan)) {
+    alert('Galat PAN Card! Sahi format bharein (Jaise: ABCDE1234F).');
+    return;
+  }
+  if (!aadhRegex.test(aadh)) {
+    alert('Galat Identity / Aadhaar Number! Poora 12-digit number hona chahiye.');
+    return;
+  }
+  if (!pinRegex.test(pin)) {
+    alert('Galat Pincode! 6-digit ka area pincode bharein.');
+    return;
+  }
 
-      if(!firm || !dist) {
-        alert('Kripya firm aur district bharein.');
-        return;
-      }
+  pendingApp = {
+    type: 'Retailer',
+    name: currentSession.name,
+    phone: currentSession.phone,
+    shop: shop,
+    pan: pan,
+    idProof: aadh,
+    pin: pin,
+    applyTime: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+  };
 
-      pendingApp = {
-        type: 'Distributor',
-        name: currentSession.name,
-        phone: currentSession.phone,
-        detail: firm + ' (' + dist + ')',
-        pan: 'Franchise Request'
-      };
-      localStorage.setItem('rm_app', JSON.stringify(pendingApp));
-      alert('Distributor Application Submitted! Admin review karega.');
-      closeModals();
-    }
+  localStorage.setItem('rm_app', JSON.stringify(pendingApp));
+  alert('Application jama ho gayi hai! Super Admin approve karega tab Member Login khulega.');
+  closeModals();
+}
+
+// STRICT DISTRIBUTOR SUBMIT
+function submitDistributor() {
+  var firm = document.getElementById('fDistFirm').value.trim();
+  var dist = document.getElementById('fDistDistrict').value.trim();
+  var stock = document.getElementById('fDistStock').value;
+
+  if (firm.length < 3 || dist.length < 3) {
+    alert('Kripya sahi Firm ka naam aur District bharein.');
+    return;
+  }
+
+  pendingApp = {
+    type: 'Distributor',
+    name: currentSession.name,
+    phone: currentSession.phone,
+    shop: firm,
+    pan: 'Franchise Request (' + stock + ')',
+    idProof: 'Area: ' + dist,
+    pin: 'Distributor Node',
+    applyTime: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+  };
+
+  localStorage.setItem('rm_app', JSON.stringify(pendingApp));
+  alert('Distributor Application jama ho chuki hai! Super Admin panel se approval ka intezar karein.');
+  closeModals();
+}
 
     // SUPER ADMIN DESK
     function unlockAdmin() {
