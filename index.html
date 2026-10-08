@@ -379,7 +379,7 @@
 
       <div id="adminLock">
         <div class="form-group">
-          <label>Enter Master PIN / Password (Rahamtulla@#@2005@#@ )
+          <label>Enter Master PIN / Password</label>
           <input type="password" id="masterPin" placeholder="Master PIN" style="text-align:center; font-size:16px; letter-spacing:4px;" maxlength="6">
         </div>
         <button type="button" class="btn-submit" onclick="unlockAdmin()">ACCESS ADMIN DESK</button>
@@ -648,15 +648,18 @@
 
     // SUPER ADMIN DESK
     function unlockAdmin() {
-      var p = document.getElementById('masterPin').value.trim();
-      if(p === '7860' || p === '2026') {
-        document.getElementById('adminLock').style.display = 'none';
-        document.getElementById('adminDashboard').style.display = 'block';
-        loadAdminQueue();
-      } else {
-        alert('Galat Master PIN!');
-      }
-    }
+  var p = document.getElementById('masterPin').value.trim();
+  
+  var targetHash = 'UmFoYWl0dwxsYUAjQFAjMDAl';
+
+  if (btoa(p) === targetHash) {
+    document.getElementById('adminLock').style.display = 'none';
+    document.getElementById('adminDashboard').style.display = 'block';
+    loadAdminQueue();
+  } else {
+    alert('Galat Master Security PIN / Password!');
+  }
+}
 
     function lockAdmin() {
       document.getElementById('adminDashboard').style.display = 'none';
