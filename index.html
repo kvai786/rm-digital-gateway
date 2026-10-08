@@ -379,7 +379,7 @@
 
       <div id="adminLock">
         <div class="form-group">
-          <label>Enter Master PIN / Password (Default: 7860)</label>
+          <label>Enter Master PIN / Password (Rahamtulla@#@2005@#@ )</label>
           <input type="password" id="masterPin" placeholder="Master PIN" style="text-align:center; font-size:16px; letter-spacing:4px;" maxlength="6">
         </div>
         <button type="button" class="btn-submit" onclick="unlockAdmin()">ACCESS ADMIN DESK</button>
@@ -444,10 +444,6 @@
     };
 
     var pendingApp = JSON.parse(localStorage.getItem('rm_app')) || null;
-    var activityList = JSON.parse(localStorage.getItem('rm_tracker')) || [
-      { name: 'Ramesh Mahato', phone: '9832104521', login: '10:15 AM', last: '01:05 PM', dur: '2h 50m', status: 'Online' },
-      { name: 'Subir Roy (Distributor)', phone: '9800000000', login: '09:30 AM', last: '12:45 PM', dur: '3h 15m', status: 'Active' }
-    ];
 
     window.onload = function() {
       syncUI();
