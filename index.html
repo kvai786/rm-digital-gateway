@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RM Digital Master Gateway - Direct Member Terminal</title>
+  <title>RM Digital Master Gateway - All Fintech Services</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
       --primary: #4a148c;
       --primary-light: #7b1fa2;
       --accent: #00c853;
-      --bg: #f1f5f9;
+      --bg: #f8fafc;
       --card: #ffffff;
       --border: #e2e8f0;
       --text: #0f172a;
@@ -23,53 +23,29 @@
     .portal-shell { width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
     .max-bound { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 16px; }
 
-    /* VAULT OVERLAY */
-    .vault-screen {
-      position: fixed; inset: 0; z-index: 2000;
-      background: radial-gradient(circle at center, #240046 0%, #0d001a 100%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px; color: #fff;
-      transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease;
-    }
-    .vault-screen.open { transform: scale(1.05); opacity: 0; pointer-events: none; }
-    .bio-ring {
-      width: 80px; height: 80px; border-radius: 50%; border: 2px dashed #d8b4fe;
-      display: flex; align-items: center; justify-content: center; font-size: 38px; color: #d8b4fe;
-      margin-bottom: 16px; position: relative;
-    }
-    .bio-ring.scanning::after {
-      content: ''; position: absolute; width: 100%; height: 2px; background: #00e676;
-      animation: scan 1.2s infinite alternate ease-in-out;
-    }
-    @keyframes scan { from { top: 10%; } to { top: 90%; } }
-    .vault-box {
-      width: 100%; max-width: 380px; background: rgba(255,255,255,0.06); padding: 24px;
-      border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px);
-    }
-    .v-input {
-      width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #7b1fa2;
-      background: rgba(0,0,0,0.4); color: #fff; font-size: 15px; margin-bottom: 12px; outline: none;
-    }
-    .v-btn {
-      width: 100%; padding: 12px; border-radius: 8px; background: var(--accent);
-      color: #000; font-weight: 800; border: none; cursor: pointer; font-size: 14px;
-    }
-
     /* HEADER */
-    .header-bar { background: linear-gradient(135deg, var(--primary) 0%, #311b92 100%); color: #fff; padding: 14px 0; }
+    .header-bar { background: linear-gradient(135deg, var(--primary) 0%, #311b92 100%); color: #fff; padding: 16px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
     .header-content { display: flex; justify-content: space-between; align-items: center; }
-    .brand-title { font-size: 20px; font-weight: 900; letter-spacing: 0.5px; }
+    .brand-title { font-size: 22px; font-weight: 900; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
     .brand-title span { color: #ffca28; }
+    
     .wallet-card {
-      background: rgba(255,255,255,0.12); padding: 12px 18px; border-radius: 12px;
+      background: rgba(255,255,255,0.12); padding: 14px 20px; border-radius: 12px;
       display: flex; justify-content: space-between; align-items: center; margin-top: 14px;
+      border: 1px solid rgba(255,255,255,0.2);
     }
+    .btn-login-top {
+      padding: 8px 16px; background: #ff9800; color: #000; border: none;
+      border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; transition: 0.2s;
+    }
+    .btn-login-top:hover { background: #fb8c00; transform: translateY(-1px); }
 
-    .ticker { background: #e8f5e9; color: #1b5e20; font-size: 12px; font-weight: 700; padding: 8px 0; border-bottom: 1px solid #c8e6c9; }
+    .ticker { background: #e8f5e9; color: #1b5e20; font-size: 13px; font-weight: 700; padding: 10px 0; border-bottom: 1px solid #c8e6c9; }
 
     /* LAYOUT COLUMNS */
     .dashboard-grid {
-      display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px 0;
+      display: grid; grid-template-columns: 1fr; gap: 20px; padding: 24px 0;
     }
     @media (min-width: 992px) {
       .dashboard-grid { grid-template-columns: 340px 1fr; }
@@ -78,44 +54,45 @@
     /* PROMO & CARDS */
     .banner-promo {
       background: linear-gradient(135deg, #4a148c 0%, #1e1b4b 100%); color: #fff;
-      padding: 16px; border-radius: 14px; margin-bottom: 16px;
+      padding: 18px; border-radius: 14px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     .dual-apply { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
     .apply-card {
       background: #fff; border: 1.5px dashed var(--primary-light); padding: 16px; border-radius: 14px;
       text-align: center; cursor: pointer; transition: 0.2s;
     }
-    .apply-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .apply-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
     .apply-card h4 { font-size: 13px; font-weight: 800; color: var(--primary); margin-top: 6px; }
 
     /* SERVICES */
-    .services-box { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .services-box { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
     .cat-head {
-      font-size: 14px; font-weight: 800; color: var(--primary); padding-bottom: 8px;
-      display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0;
-      margin-bottom: 14px; margin-top: 20px;
+      font-size: 15px; font-weight: 800; color: var(--primary); padding-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9;
+      margin-bottom: 16px; margin-top: 22px;
     }
     .cat-head:first-child { margin-top: 0; }
-    .cat-tag { font-size: 10px; background: #ede7f6; color: var(--primary); padding: 3px 8px; border-radius: 12px; }
+    .cat-tag { font-size: 11px; background: #ede7f6; color: var(--primary); padding: 3px 10px; border-radius: 12px; font-weight: 700; }
 
     .service-tiles {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
     }
     @media (min-width: 768px) {
       .service-tiles { grid-template-columns: repeat(6, 1fr); gap: 16px; }
     }
     .tile {
       display: flex; flex-direction: column; align-items: center; text-align: center;
-      cursor: pointer; padding: 10px 4px; border-radius: 12px; transition: 0.2s;
+      cursor: pointer; padding: 12px 6px; border-radius: 12px; transition: 0.2s;
+      border: 1px solid transparent;
     }
-    .tile:hover { background: #f8fafc; transform: translateY(-2px); }
+    .tile:hover { background: #f8fafc; border-color: #e2e8f0; transform: translateY(-2px); }
     .icon-wrapper {
-      width: 48px; height: 48px; background: #ede7f6; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary);
-      margin-bottom: 6px; position: relative;
+      width: 50px; height: 50px; background: #ede7f6; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary);
+      margin-bottom: 8px; position: relative;
     }
-    .tile-name { font-size: 11px; font-weight: 600; color: #1e293b; line-height: 1.2; }
-    .tile-rate { font-size: 9px; font-weight: 700; color: #16a34a; margin-top: 2px; }
+    .tile-name { font-size: 12px; font-weight: 700; color: #1e293b; line-height: 1.2; }
+    .tile-rate { font-size: 10px; font-weight: 800; color: #16a34a; margin-top: 4px; }
 
     /* MODAL */
     .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 3000; align-items: center; justify-content: center; padding: 16px; }
@@ -127,9 +104,9 @@
     .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; outline: none; }
     .btn-submit { width: 100%; padding: 12px; border: none; background: var(--primary); color: #fff; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 13px; }
     .btn-redirect {
-      width: 100%; padding: 12px; border: none; background: var(--accent); color: #000;
-      font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 13px; margin-top: 16px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px; border: none; background: var(--accent); color: #000;
+      font-weight: 900; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 16px;
+      display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,200,83,0.3);
     }
 
     table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
@@ -143,88 +120,64 @@
 
 <div class="portal-shell">
 
-  <!-- 1. CYBER VAULT LOGIN (AUTO-FILL OTP) -->
-  <div id="vaultGate" class="vault-screen">
-    <div class="bio-ring" id="bioBox"><i class="fa-solid fa-fingerprint"></i></div>
-    
-    <div class="vault-box" id="stepMobile">
-      <h3 style="font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 4px;">RM Security Gateway</h3>
-      <p style="font-size: 12px; color: #bbb; text-align: center; margin-bottom: 16px;">Registered Mobile Number Se Access Karein</p>
-      <input type="tel" id="userMobile" class="v-input" placeholder="10-Digit Mobile Number" maxlength="10">
-      <button class="v-btn" onclick="sendOtp()">VERIFY & SEND OTP</button>
-    </div>
-
-    <div class="vault-box" id="stepOtp" style="display: none;">
-      <h3 style="font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 4px;">Biometric Verification</h3>
-      <p style="font-size: 12px; color: #00e676; text-align: center; margin-bottom: 14px;">OTP Sent to <span id="numTarget"></span></p>
-      <input type="text" id="otpInput" class="v-input" placeholder="6-Digit OTP" maxlength="6" style="text-align: center; letter-spacing: 4px; font-weight: 800;">
-      <div id="scanStatus" style="font-size: 12px; color: #00e676; margin-bottom: 10px; text-align: center; display: none;">Authenticating Node Session...</div>
-      <button class="v-btn" onclick="verifyAndUnlock()">AUTHENTICATE & ENTER</button>
-      <div style="text-align: center; margin-top: 10px;">
-        <span style="font-size: 11px; color: #aaa; cursor: pointer;" onclick="backToMobile()">Number change karein</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. HEADER -->
+  <!-- TOP HEADER -->
   <header class="header-bar">
     <div class="max-bound">
       <div class="header-content">
         <div class="brand-title"><i class="fa-solid fa-shield-halved"></i> ezeepay® <span>MASTER GATEWAY</span></div>
         <div style="display: flex; align-items: center; gap: 12px;">
-          <button style="padding: 6px 12px; background: #ff9800; color: #000; border: none; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer;" onclick="goToMemberLogin()">
-            <i class="fa-solid fa-right-to-bracket"></i> Member Login
+          <button class="btn-login-top" onclick="goToMemberLogin()">
+            <i class="fa-solid fa-right-to-bracket"></i> Retailer / Member Login
           </button>
-          <i class="fa-solid fa-user-gear" style="font-size: 20px; cursor: pointer;" onclick="openProfileModal()" title="Profile & Roles"></i>
         </div>
       </div>
 
       <div class="wallet-card">
         <div>
-          <div style="font-size: 18px; font-weight: 800;">₹ 5,085.93</div>
-          <div style="font-size: 11px; opacity: 0.85;" id="shopTag">RM Digital Centre</div>
+          <div style="font-size: 20px; font-weight: 900;">₹ 5,085.93</div>
+          <div style="font-size: 12px; opacity: 0.9;">RM Digital Centre • Bankura Master Hub</div>
         </div>
-        <button class="v-btn" style="width: auto; padding: 8px 16px; color:#fff;" onclick="goToMemberLogin()">Add Money</button>
+        <button style="padding: 8px 18px; background: var(--accent); border:none; border-radius:8px; font-weight:800; cursor:pointer;" onclick="goToMemberLogin()">Add Money</button>
       </div>
     </div>
   </header>
 
   <div class="ticker">
     <div class="max-bound">
-      <marquee scrollamount="5">AePS Cash Withdrawal Upto ₹12 Commission | Mini Statement Flat ₹1.00 | UTI PAN Coupon ₹105 | Direct Terminal Redirection Active</marquee>
+      <marquee scrollamount="5">⚡ AePS Cash Withdrawal Upto ₹12 Commission | Mini Statement Flat ₹1.00 | UTI/NSDL PAN Coupon ₹105 | Direct Official Member Login Active</marquee>
     </div>
   </div>
 
-  <!-- 3. DASHBOARD -->
+  <!-- DASHBOARD -->
   <main class="max-bound">
     <div class="dashboard-grid">
 
       <!-- LEFT SIDEBAR -->
       <div>
         <div class="banner-promo">
-          <h4 style="font-size: 14px; font-weight: 800;">Super Prime Target 2026</h4>
-          <p style="font-size: 11px; opacity: 0.9; margin-top: 3px;">12 Mahine subscription lene par Micro ATM device bilkul FREE!</p>
+          <h4 style="font-size: 15px; font-weight: 800;">Super Prime Target 2026</h4>
+          <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">12 Mahine plan lene par Micro ATM device bilkul FREE milega!</p>
         </div>
 
         <div class="dual-apply">
           <div class="apply-card" onclick="openRetailerModal()">
-            <i class="fa-solid fa-store" style="color: var(--primary); font-size: 22px;"></i>
+            <i class="fa-solid fa-store" style="color: var(--primary); font-size: 24px;"></i>
             <h4>New Retailer ID</h4>
-            <p style="font-size: 10px; color: var(--subtext); margin-top: 2px;">Apply in 10-Mins</p>
+            <p style="font-size: 11px; color: var(--subtext); margin-top: 2px;">Apply in 10-Mins</p>
           </div>
           <div class="apply-card" onclick="openDistributorModal()">
-            <i class="fa-solid fa-building-shield" style="color: #c2185b; font-size: 22px;"></i>
+            <i class="fa-solid fa-building-shield" style="color: #c2185b; font-size: 24px;"></i>
             <h4 style="color: #c2185b;">New Distributor</h4>
-            <p style="font-size: 10px; color: var(--subtext); margin-top: 2px;">Territory Franchise</p>
+            <p style="font-size: 11px; color: var(--subtext); margin-top: 2px;">Territory Franchise</p>
           </div>
         </div>
 
-        <div style="background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 16px;">
-          <div style="font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 4px;">Assigned Territory Support</div>
-          <div style="font-size: 12px; color: var(--subtext); margin-bottom: 12px;">Bankura District Hub: Subir Roy (+91 9800000000)</div>
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 16px;">
+          <div style="font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 4px;">Assigned Territory Support</div>
+          <div style="font-size: 12px; color: var(--subtext); margin-bottom: 14px;">Bankura District Hub: Subir Roy (+91 9800000000)</div>
           <div style="display: flex; gap: 8px;">
-            <button style="flex:1; padding: 8px; background: #2e7d32; color:#fff; border:none; border-radius:8px; font-size:12px; cursor:pointer;" onclick="window.open('tel:9800000000')"><i class="fa-solid fa-phone"></i> Call Lead</button>
-            <button style="flex:1; padding: 8px; background: #c62828; color:#fff; border:none; border-radius:8px; font-size:12px; cursor:pointer; font-weight:700;" onclick="alert('Central Admin ko negligence complaint bhej di gayi!')">Alert Admin</button>
+            <button style="flex:1; padding: 10px; background: #2e7d32; color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;" onclick="window.open('tel:9800000000')"><i class="fa-solid fa-phone"></i> Call Lead</button>
+            <button style="flex:1; padding: 10px; background: #c62828; color:#fff; border:none; border-radius:8px; font-size:12px; cursor:pointer; font-weight:700;" onclick="alert('Central Admin ko distributor complaint bhej di gayi hai!')">Alert Admin</button>
           </div>
         </div>
       </div>
@@ -273,7 +226,7 @@
             <span class="tile-name">UPI Cash Point</span>
             <span class="tile-rate">QR Payment</span>
           </div>
-          <div class="tile" onclick="alert('NSDL Payment Bank account opening jald hi live hoga!')">
+          <div class="tile" onclick="alert('NSDL Payment Bank account opening service jald shuru hogi!')">
             <div class="icon-wrapper">
               <i class="fa-solid fa-landmark"></i>
               <span style="position:absolute; top:-2px; right:-2px; background:red; color:#fff; font-size:7px; padding:1px 4px; border-radius:4px;">SOON</span>
@@ -383,5 +336,68 @@
 
 </div>
 
-<!-- UNIFIED MODAL -->
-<div id
+<!-- UNIFIED SERVICE DETAILS & LOGIN REDIRECTION MODAL -->
+<div id="serviceModal" class="modal">
+  <div class="modal-content">
+    <div class="m-header">
+      <h4 id="serviceTitle" style="font-size:16px; font-weight:800; color:var(--primary);">Service Commission & Charges</h4>
+      <i class="fa-solid fa-xmark" style="font-size:18px; cursor:pointer;" onclick="closeModals()"></i>
+    </div>
+    
+    <div id="serviceBody"></div>
+
+    <!-- DIRECT ACTION REDIRECTION BUTTON -->
+    <button class="btn-redirect" onclick="goToMemberLogin()">
+      <i class="fa-solid fa-arrow-right-to-bracket"></i> PROCEED & LOGIN TO MEMBER TERMINAL
+    </button>
+  </div>
+</div>
+
+<!-- NEW RETAILER APPLICATION -->
+<div id="retailerModal" class="modal">
+  <div class="modal-content">
+    <div class="m-header">
+      <h4 style="font-size:16px; font-weight:800; color:var(--primary);">New Retailer ID Registration</h4>
+      <i class="fa-solid fa-xmark" style="font-size:18px; cursor:pointer;" onclick="closeModals()"></i>
+    </div>
+    <form onsubmit="saveRetailer(event)">
+      <div class="form-group">
+        <label>Full Applicant Name (Aadhaar ke anusaar)</label>
+        <input type="text" placeholder="Apna pura naam likhein" required>
+      </div>
+      <div class="form-group">
+        <label>Active WhatsApp Mobile Number</label>
+        <input type="tel" placeholder="10-digit mobile" maxlength="10" required>
+      </div>
+      <div class="form-group">
+        <label>Shop / CSP Center Name</label>
+        <input type="text" placeholder="Dukan ya Center ka naam" required>
+      </div>
+      <div class="form-group">
+        <label>Area Pincode (Auto-Territory Lead Routing)</label>
+        <input type="text" placeholder="6-digit pincode" maxlength="6" required>
+      </div>
+      <button type="submit" class="btn-submit">SUBMIT RETAILER APPLICATION</button>
+    </form>
+  </div>
+</div>
+
+<!-- NEW DISTRIBUTOR APPLICATION -->
+<div id="distributorModal" class="modal">
+  <div class="modal-content">
+    <div class="m-header">
+      <h4 style="font-size:16px; font-weight:800; color:#c2185b;">Territory Distributor Franchise Application</h4>
+      <i class="fa-solid fa-xmark" style="font-size:18px; cursor:pointer;" onclick="closeModals()"></i>
+    </div>
+    <form onsubmit="saveDistributor(event)">
+      <div class="form-group">
+        <label>Distributor Agency / Master Name</label>
+        <input type="text" placeholder="Firm ya Applicant ka naam" required>
+      </div>
+      <div class="form-group">
+        <label>WhatsApp / Calling Number</label>
+        <input type="tel" placeholder="10-digit number" maxlength="10" required>
+      </div>
+      <div class="form-group">
+        <label>Target Operating District</label>
+        <input
