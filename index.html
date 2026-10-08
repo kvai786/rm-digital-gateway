@@ -4,382 +4,801 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ezeepay® [ R.M Digital Centre ] - Master Terminal</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    :root {
-      --primary: #4a148c;
-      --primary-dark: #2a0845;
-      --accent: #00c853;
-      --bg: #f4f6f9;
-      --surface: #ffffff;
-      --border: #cbd5e1;
-      --text: #0f172a;
-      --sub: #64748b;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f1f5f9; color: #0f172a; min-height: 100vh; }
 
     /* HEADER */
-    .top-header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    .header-bar {
+      background: linear-gradient(135deg, #4a148c 0%, #2a0845 100%);
       color: #fff; padding: 14px 20px; position: sticky; top: 0; z-index: 100;
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      display: flex; justify-content: space-between; align-items: center;
     }
-    .header-shell { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; width: 100%; }
-    .brand-group { display: flex; align-items: center; gap: 14px; }
-    
-    .nav-toggle-btn {
-      font-size: 22px; cursor: pointer; color: #fff; background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25); padding: 6px 12px; border-radius: 8px;
+    .brand-wrap { display: flex; align-items: center; gap: 12px; }
+    .drawer-btn {
+      background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.3);
+      padding: 6px 12px; border-radius: 6px; font-size: 20px; cursor: pointer;
     }
-    .nav-toggle-btn:hover { background: rgba(255,255,255,0.3); }
+    .brand-text { font-size: 18px; font-weight: 900; }
+    .brand-text span { color: #ffca28; }
+    .brand-tag { font-size: 12px; background: rgba(255,255,255,0.15); padding: 3px 8px; border-radius: 4px; color: #e2e8f0; margin-left: 6px; }
 
-    .brand-title { font-size: 19px; font-weight: 900; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
-    .brand-title span { color: #ffca28; }
-    .brand-tag { font-size: 12px; color: #e0e7ff; background: rgba(255,255,255,0.18); padding: 4px 8px; border-radius: 6px; font-weight: 700; }
-
-    .header-actions { display: flex; align-items: center; gap: 10px; }
-    .lang-box {
-      background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.3);
-      padding: 7px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; outline: none; cursor: pointer;
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .lang-dropdown {
+      background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.3);
+      padding: 6px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; outline: none; cursor: pointer;
     }
-    .lang-box option { background: #2a0845; color: #fff; }
+    .lang-dropdown option { background: #2a0845; color: #fff; }
 
-    .btn-top {
-      padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; border: none; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;
+    .btn-action {
+      padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 800;
+      border: none; cursor: pointer;
     }
-    .btn-member-login { background: var(--accent); color: #000; display: none; }
-    .btn-member-login:hover { background: #00e676; }
-    .btn-auth-trigger { background: #ff9800; color: #000; }
-    .btn-auth-trigger:hover { background: #fb8c00; }
+    .btn-register { background: #ff9800; color: #000; }
+    .btn-member { background: #00c853; color: #000; display: none; }
 
     /* TICKER */
-    .ticker-bar { background: #e8f5e9; color: #1b5e20; font-size: 12px; font-weight: 700; padding: 8px 20px; border-bottom: 1px solid #c8e6c9; }
+    .ticker { background: #e8f5e9; color: #1b5e20; font-size: 12px; font-weight: 700; padding: 8px 16px; border-bottom: 1px solid #c8e6c9; }
 
-    /* PORTAL MAIN */
-    .portal-main { max-width: 1400px; margin: 0 auto; padding: 20px; width: 100%; }
+    /* MAIN CONTAINER */
+    .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
 
-    /* PROMO BANNER */
-    .promo-banner {
+    /* BANNER */
+    .banner {
       background: linear-gradient(135deg, #4a148c 0%, #1e1b4b 100%); color: #fff;
-      border-radius: 16px; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 22px; box-shadow: 0 4px 14px rgba(74, 20, 140, 0.15);
+      border-radius: 14px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px; box-shadow: 0 4px 12px rgba(74, 20, 140, 0.15);
+    }
+    .banner h3 { font-size: 17px; margin-bottom: 4px; }
+    .banner p { font-size: 13px; opacity: 0.9; }
+
+    /* ONBOARDING DECK */
+    .deck-section { display: none; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    @media (max-width: 768px) { .deck-section { grid-template-columns: 1fr; } }
+    .deck-card {
+      background: #fff; border: 1.5px dashed #4a148c; padding: 16px 20px; border-radius: 12px;
+      cursor: pointer; display: flex; align-items: center; gap: 14px;
+    }
+    .deck-icon {
+      width: 44px; height: 44px; border-radius: 10px; background: #ede7f6;
+      display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; color: #4a148c;
     }
 
-    /* APPLICATION DECK (AUTO MANAGED) */
-    .application-deck { display: none; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
-    @media (max-width: 768px) { .application-deck { grid-template-columns: 1fr; } }
-    .apply-card {
-      background: #fff; border: 1.5px dashed var(--primary); padding: 18px 20px; border-radius: 14px;
-      cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 16px;
-    }
-    .apply-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
-    .apply-icon {
-      width: 48px; height: 48px; border-radius: 14px; background: #ede7f6;
-      display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary); flex-shrink: 0;
+    .approved-box {
+      background: #ecfdf5; border: 1.5px solid #059669; border-radius: 12px; padding: 16px 20px;
+      margin-bottom: 20px; display: none; justify-content: space-between; align-items: center;
     }
 
-    .approval-active-banner {
-      background: #ecfdf5; border: 1.5px solid #059669; border-radius: 14px; padding: 18px 22px;
-      margin-bottom: 22px; display: none; align-items: center; justify-content: space-between; gap: 14px;
-    }
+    /* SERVICES CATEGORY */
+    .category-card { background: #fff; border-radius: 14px; padding: 20px; border: 1px solid #cbd5e1; margin-bottom: 20px; }
+    .cat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; }
+    .cat-head h4 { font-size: 15px; font-weight: 800; color: #4a148c; }
+    .cat-badge { font-size: 11px; background: #e8f5e9; color: #2e7d32; padding: 3px 8px; border-radius: 4px; font-weight: 700; }
 
-    /* CATEGORIES & TILES */
-    .category-section { background: var(--surface); border-radius: 16px; padding: 22px; border: 1px solid var(--border); margin-bottom: 22px; }
-    .cat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
-    .cat-head h4 { font-size: 15px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    .services-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+    @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 640px) { .services-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; } }
 
-    .service-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
-    @media (max-width: 1024px) { .service-grid { grid-template-columns: repeat(4, 1fr); } }
-    @media (max-width: 640px) { .service-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; } }
-
-    .service-tile {
+    .item-card {
       display: flex; flex-direction: column; align-items: center; text-align: center;
-      padding: 12px 6px; border-radius: 14px; cursor: pointer; transition: 0.2s;
+      padding: 12px 6px; border-radius: 10px; cursor: pointer; transition: 0.2s; border: 1px solid transparent;
     }
-    .service-tile:hover { background: #f8fafc; transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
-    .icon-3d {
-      width: 50px; height: 50px; border-radius: 16px; background: #ede7f6;
-      display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary);
-      margin-bottom: 8px; transition: 0.2s;
+    .item-card:hover { background: #f8fafc; border-color: #cbd5e1; transform: translateY(-3px); }
+    .icon-box {
+      width: 46px; height: 46px; border-radius: 12px; background: #ede7f6;
+      display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; color: #4a148c;
+      margin-bottom: 6px;
     }
-    .service-tile:hover .icon-3d { transform: scale(1.08); background: #d1c4e9; }
-    .tile-text { font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.25; }
-    .tile-rate { font-size: 9px; font-weight: 800; color: #16a34a; margin-top: 4px; }
+    .item-name { font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.2; }
+    .item-rate { font-size: 9px; font-weight: 800; color: #16a34a; margin-top: 3px; }
 
     /* SLIDE DRAWER */
-    .drawer-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 1500;
-      display: none;
+    .drawer-mask {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; display: none;
     }
-    .side-drawer {
-      position: fixed; top: 0; left: -320px; width: 300px; height: 100vh;
-      background: #fff; z-index: 1501; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 4px 0 20px rgba(0,0,0,0.25); display: flex; flex-direction: column; padding: 20px;
+    .drawer {
+      position: fixed; top: 0; left: -320px; width: 290px; height: 100vh;
+      background: #fff; z-index: 1001; transition: left 0.3s ease;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.2); padding: 20px; display: flex; flex-direction: column;
     }
-    .side-drawer.show { left: 0; }
-    .drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 16px; }
+    .drawer.open { left: 0; }
+    .drawer-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 12px; margin-bottom: 14px; }
+    .drawer-profile { text-align: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 14px; margin-bottom: 14px; }
+    .profile-avatar { width: 56px; height: 56px; border-radius: 50%; background: #ede7f6; color: #4a148c; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; border: 2px solid #4a148c; margin-bottom: 6px; }
 
-    .drawer-menu { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .drawer-item {
-      padding: 12px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; color: var(--sub);
-      display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.2s;
-    }
-    .drawer-item:hover { background: #ede7f6; color: var(--primary); }
+    .drawer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .drawer-link { padding: 10px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #475569; cursor: pointer; }
+    .drawer-link:hover { background: #ede7f6; color: #4a148c; }
 
     /* MODAL WINDOWS */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65);
       z-index: 2000; align-items: center; justify-content: center; padding: 16px;
     }
     .modal-box {
-      background: #fff; width: 100%; max-width: 520px; border-radius: 18px; padding: 24px;
-      max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      background: #fff; width: 100%; max-width: 500px; border-radius: 14px; padding: 22px;
+      max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.25);
     }
-    .m-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-    
-    .field-row { margin-bottom: 14px; }
-    .field-row label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 5px; }
-    .field-row label span { color: red; font-weight: 900; }
-    .field-row input, .field-row select { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; outline: none; }
-    .field-row input[readonly] { background: #f1f5f9; cursor: not-allowed; }
-
-    .btn-submit-main { width: 100%; padding: 12px; border: none; background: var(--primary); color: #fff; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 13px; }
-    .btn-core-redirect {
-      width: 100%; padding: 14px; border: none; background: var(--accent); color: #000;
-      font-weight: 900; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 14px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
+    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; outline: none; }
+    .btn-submit { width: 100%; padding: 12px; border: none; background: #4a148c; color: #fff; font-weight: 800; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    .btn-redirect { width: 100%; padding: 12px; border: none; background: #00c853; color: #000; font-weight: 900; border-radius: 6px; cursor: pointer; font-size: 13px; margin-top: 14px; }
 
     table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-    th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
-    th { background: #f8fafc; font-weight: 700; color: var(--primary); }
-    .payout { color: #16a34a; font-weight: 700; }
+    th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
+    th { background: #f8fafc; font-weight: 700; color: #4a148c; }
+    .green { color: #16a34a; font-weight: 700; }
+    .red { color: #dc2626; font-weight: 700; }
   </style>
 </head>
 <body>
 
-  <!-- TOP HEADER -->
-  <header class="top-header">
-    <div class="header-shell">
-      <div class="brand-group">
-        <button type="button" class="nav-toggle-btn" onclick="openDrawer()">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-        <div class="brand-title">
-          <i class="fa-solid fa-shield-halved"></i> ezeepay® <span class="brand-tag">[ R.M Digital Centre ]</span>
-        </div>
-      </div>
-
-      <div class="header-actions">
-        <!-- 3 LANGUAGES -->
-        <select class="lang-box" id="langSelect" onchange="switchLanguage()">
-          <option value="en">English</option>
-          <option value="hi">हिंदी</option>
-          <option value="bn">বাংলা</option>
-        </select>
-
-        <!-- MEMBER LOGIN (VISIBLE ONLY AFTER APPROVAL) -->
-        <button type="button" class="btn-top btn-member-login" id="btnTopMemberLogin" onclick="openMemberLogin()">
-          <i class="fa-solid fa-right-to-bracket"></i> <span id="txt-member-login">Member Login</span>
-        </button>
-
-        <!-- VISITOR AUTHENTICATION TRIGGER -->
-        <button type="button" class="btn-top btn-auth-trigger" id="btnTopAuth" onclick="openAuthModal()">
-          <i class="fa-solid fa-user-circle"></i> <span id="headerAuthLabel">New Registration</span>
-        </button>
-      </div>
+  <!-- HEADER -->
+  <header class="header-bar">
+    <div class="brand-wrap">
+      <button type="button" class="drawer-btn" onclick="openDrawer()">☰</button>
+      <div class="brand-text">ezeepay® <span>MASTER</span> <span class="brand-tag">[ R.M Digital Centre ]</span></div>
+    </div>
+    <div class="header-right">
+      <select class="lang-dropdown" id="langSelect" onchange="changeLanguage()">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="bn">বাংলা</option>
+      </select>
+      <button type="button" class="btn-action btn-member" id="btnMember" onclick="openOfficialLogin()">Member Login</button>
+      <button type="button" class="btn-action btn-register" id="btnAuth" onclick="openAuthModal()">New Registration</button>
     </div>
   </header>
 
   <!-- TICKER -->
-  <div class="ticker-bar">
-    <div style="max-width: 1400px; margin: 0 auto;">
-      <marquee scrollamount="5" id="liveTicker">
-        ⚡ Highest AePS Commission Upto ₹12 | Mini Statement Flat ₹1.00 | UTI PAN Coupon ₹105 | Official Retailer Terminal Redirection Active
-      </marquee>
-    </div>
+  <div class="ticker">
+    <marquee scrollamount="5" id="tickerText">
+      ⚡ Highest AePS Commission Upto ₹12 | Mini Statement Flat ₹1.00 | UTI PAN Coupon ₹105 | Official Retailer Terminal Redirection Active
+    </marquee>
   </div>
 
   <!-- MAIN DASHBOARD -->
-  <main class="portal-main">
+  <main class="container">
 
     <!-- PROMO BANNER -->
-    <section class="promo-banner">
+    <div class="banner">
       <div>
-        <h3 style="font-size: 17px; font-weight:800;" id="txt-promo-title">Super Prime Offer 2026</h3>
-        <p style="font-size: 13px; opacity:0.9;" id="txt-promo-sub">12-Month Master plan subscription lene par Micro ATM 100% FREE!</p>
+        <h3 id="promoTitle">Super Prime Target Offer 2026</h3>
+        <p id="promoSub">12-Month Master plan subscription lene par Micro ATM 100% FREE!</p>
       </div>
-      <button style="padding: 8px 16px; background:#ff9800; border:none; border-radius:8px; font-weight:800; cursor:pointer;" onclick="openMemberLogin()">Avail Offer</button>
-    </section>
+      <button type="button" class="btn-action" style="background:#ff9800; color:#000;" onclick="openOfficialLogin()">Avail Now</button>
+    </div>
 
     <!-- ONBOARDING APPLICATION DECK (SHOWN ONLY AFTER REGISTRATION) -->
-    <section class="application-deck" id="applyActionSection">
-      <div class="apply-card" onclick="openRetailerModal()">
-        <div class="apply-icon"><i class="fa-solid fa-store"></i></div>
+    <section class="deck-section" id="applicationDeck">
+      <div class="deck-card" onclick="openRetailerModal()">
+        <div class="deck-icon">🏪</div>
         <div>
-          <h4 style="font-size: 14px; font-weight:800; color:var(--primary);" id="txt-ret-head">Apply New Retailer ID</h4>
-          <p style="font-size: 11px; color:var(--sub);" id="txt-ret-sub">Instant 10-Min Onboarding</p>
+          <h4 style="font-size:14px; font-weight:800; color:#4a148c;" id="retTitle">Apply New Retailer ID</h4>
+          <p style="font-size:11px; color:#64748b;" id="retSub">Instant 10-Min Onboarding</p>
         </div>
       </div>
-
-      <div class="apply-card" onclick="openDistributorModal()">
-        <div class="apply-icon" style="background:#fce4ec; color:#c2185b;"><i class="fa-solid fa-building-shield"></i></div>
+      <div class="deck-card" onclick="openDistributorModal()">
+        <div class="deck-icon" style="color:#c2185b; background:#fce4ec;">🏢</div>
         <div>
-          <h4 style="font-size: 14px; font-weight:800; color:#c2185b;" id="txt-dist-head">Apply Distributor Franchise</h4>
-          <p style="font-size: 11px; color:var(--sub);" id="txt-dist-sub">Territory Master Lead</p>
+          <h4 style="font-size:14px; font-weight:800; color:#c2185b;" id="distTitle">Apply Distributor Franchise</h4>
+          <p style="font-size:11px; color:#64748b;" id="distSub">Territory Master Lead</p>
         </div>
       </div>
     </section>
 
     <!-- APPROVED ACTIVE STATUS BANNER -->
-    <section class="approval-active-banner" id="approvedBanner">
-      <div style="display:flex; align-items:center; gap:14px;">
-        <i class="fa-solid fa-circle-check" style="font-size:28px; color:#059669;"></i>
-        <div>
-          <h4 style="font-size:15px; font-weight:800; color:#065f46;" id="txt-approved-title">Ezeepay ID Live & Verified</h4>
-          <p style="font-size:12px; color:#047857;" id="txt-approved-sub">Aapka retail terminal active ho chuka hai. Direct Member Login se kaam karein.</p>
-        </div>
+    <section class="approved-box" id="approvedBanner">
+      <div>
+        <h4 style="font-size:14px; font-weight:800; color:#065f46;" id="apprHead">Ezeepay ID Live & Verified</h4>
+        <p style="font-size:12px; color:#047857;" id="apprSub">Aapka retail terminal active ho chuka hai. Direct Member Login se kaam karein.</p>
       </div>
-      <button style="padding:10px 18px; background:#059669; color:#fff; border:none; border-radius:8px; font-weight:800; cursor:pointer;" onclick="openMemberLogin()">Open Terminal Desk</button>
+      <button type="button" class="btn-action" style="background:#059669; color:#fff;" onclick="openOfficialLogin()">Open Terminal Desk</button>
     </section>
 
-    <!-- 1. FAVOURITE BOX -->
-    <div class="category-section">
+    <!-- CATEGORY 1: FAVOURITE BOX -->
+    <div class="category-card">
       <div class="cat-head">
-        <h4><i class="fa-solid fa-star" style="color:#ff9800;"></i> <span id="head-fav">Favourite Box</span></h4>
-        <span style="font-size:11px; font-weight:700; color:#2e7d32;">Quick Access</span>
+        <h4 id="favHead">⭐ Favourite Box</h4>
+        <span class="cat-badge">Fast Access</span>
       </div>
-      <div class="service-grid">
-        <div class="service-tile" onclick="openSlab('AePS')">
-          <div class="icon-3d"><i class="fa-solid fa-fingerprint"></i></div>
-          <span class="tile-text">AePS Cash</span>
-          <span class="tile-rate">Upto ₹12</span>
-        </div>
-        <div class="service-tile" onclick="openSlab('MiniStatement')">
-          <div class="icon-3d"><i class="fa-solid fa-receipt"></i></div>
-          <span class="tile-text">Mini Statement</span>
-          <span class="tile-rate">Flat ₹1.00</span>
-        </div>
-        <div class="service-tile" onclick="openSlab('DMR')">
-          <div class="icon-3d"><i class="fa-solid fa-money-bill-transfer"></i></div>
-          <span class="tile-text">Money Transfer</span>
-          <span class="tile-rate">Instant DMT</span>
-        </div>
-        <div class="service-tile" onclick="openSlab('PAN')">
-          <div class="icon-3d"><i class="fa-solid fa-address-card"></i></div>
-          <span class="tile-text">PAN Card</span>
-          <span class="tile-rate">Coupon ₹105</span>
-        </div>
-        <div class="service-tile" onclick="openSlab('CMS')">
-          <div class="icon-3d"><i class="fa-solid fa-sack-dollar"></i></div>
-          <span class="tile-text">CMS Collection</span>
-          <span class="tile-rate">0.15% Comm</span>
-        </div>
-        <div class="service-tile" onclick="openSlab('Recharge')">
-          <div class="icon-3d"><i class="fa-solid fa-mobile-screen-button"></i></div>
-          <span class="tile-text">Prepaid Mobile</span>
-          <span class="tile-rate">Upto 3.5%</span>
-        </div>
+      <div class="services-grid">
+        <div class="item-card" onclick="showSlab('AePS')"><div class="icon-box">👆</div><span class="item-name">AePS Cash</span><span class="item-rate">Upto ₹12</span></div>
+        <div class="item-card" onclick="showSlab('MiniStatement')"><div class="icon-box">🧾</div><span class="item-name">Mini Statement</span><span class="item-rate">Flat ₹1.00</span></div>
+        <div class="item-card" onclick="showSlab('MicroATM')"><div class="icon-box">💳</div><span class="item-name">Micro ATM</span><span class="item-rate">Upto ₹12</span></div>
+        <div class="item-card" onclick="showSlab('DMR')"><div class="icon-box">💸</div><span class="item-name">Money Transfer</span><span class="item-rate">Instant DMT</span></div>
+        <div class="item-card" onclick="showSlab('PAN')"><div class="icon-box">🆔</div><span class="item-name">PAN Card Hub</span><span class="item-rate">Coupon ₹105</span></div>
+        <div class="item-card" onclick="showSlab('Mobile')"><div class="icon-box">📱</div><span class="item-name">Mobile Topup</span><span class="item-rate">Upto 3.5%</span></div>
       </div>
     </div>
 
-    <!-- 2. BC BANKING SERVICES -->
-    <div class="category-section">
+    <!-- CATEGORY 2: BC BANKING & ATM SERVICES (ALL 8 SERVICES) -->
+    <div class="category-card">
       <div class="cat-head">
-        <h4><i class="fa-solid fa-building-columns"></i> <span id="head-bc">BC Banking Services</span></h4>
-        <span style="font-size:11px; font-weight:700; color:#0284c7;">Direct Cashout</span>
+        <h4 id="bcHead">🏦 BC Banking & ATM Services</h4>
+        <span class="cat-badge">RBI / NPCI Live</span>
       </div>
-      <div class="service-grid">
-        <div class="service-tile" onclick="openSlab('AePS')">
-          <div class="icon-3d"><i class="fa-solid fa-fingerprint"></i></div>
-          <span class="tile-text">AePS Cash</span>
-          <span class="tile-rate">Commission Slab</span>
-        </div>
-        <div class="service-tile" onclick="openSlab('MiniStatement')">
-          <div class="icon-3d"><i class="fa-solid fa-file-invoice"></i></div>
-          <span class="tile-text">Mini Statement</span>
-          <span class="tile-rate">₹1.00 Payout</span>
-        </div>
-        <div class="service-tile" onclick="openSlab('MicroATM')">
-          <div class="icon-3d"><i class="fa-solid fa-calculator"></i></div>
-          <span class="tile-text">Micro ATM</span>
-          <span class="tile-rate">Card Swipe</span>
-        </div>
-        <div class="service-tile" onclick="openSlab('AadhaarPay')">
-          <div class="icon-3d"><i class="fa-solid fa-id-card-clip"></i></div>
-          <span class="tile-text">Aadhaar Pay</span>
-          <span class="tile-rate">0.35% Fee</span>
-        </div>
-        <div class="service-tile" onclick="openSlab('MoveToBank')">
-          <div class="icon-3d"><i class="fa-solid fa-paper-plane"></i></div>
-          <span class="tile-text">Move to Bank</span>
-          <span class="tile-rate">₹5 IMPS</span>
-        </div>
-        <div class="service-tile" onclick="alert('NSDL Payment Bank account opening feature live shortly!')">
-          <div class="icon-3d" style="position:relative;">
-            <i class="fa-solid fa-landmark"></i>
-            <span style="position:absolute; top:-2px; right:-2px; background:red; color:#fff; font-size:7px; padding:1px 3px; border-radius:3px;">SOON</span>
-          </div>
-          <span class="tile-text">NSDL Bank</span>
-          <span class="tile-rate">Savings A/C</span>
-        </div>
+      <div class="services-grid">
+        <div class="item-card" onclick="showSlab('AePS')"><div class="icon-box">👆</div><span class="item-name">AePS Withdrawal</span><span class="item-rate">Slab Upto ₹12</span></div>
+        <div class="item-card" onclick="showSlab('MiniStatement')"><div class="icon-box">📄</div><span class="item-name">Mini Statement</span><span class="item-rate">₹1.00 Payout</span></div>
+        <div class="item-card" onclick="showSlab('BalanceEnq')"><div class="icon-box">🔍</div><span class="item-name">Balance Enquiry</span><span class="item-rate">₹0 Cost</span></div>
+        <div class="item-card" onclick="showSlab('AadhaarPay')"><div class="icon-box">🛡️</div><span class="item-name">Aadhaar Pay</span><span class="item-rate">0.35% Surcharge</span></div>
+        <div class="item-card" onclick="showSlab('MicroATM')"><div class="icon-box">🏧</div><span class="item-name">Micro ATM</span><span class="item-rate">mPOS Swipe</span></div>
+        <div class="item-card" onclick="showSlab('MoveToBank')"><div class="icon-box">🏦</div><span class="item-name">Move to Bank</span><span class="item-rate">₹5 Settlement</span></div>
+        <div class="item-card" onclick="showSlab('UPICash')"><div class="icon-box">📲</div><span class="item-name">UPI Cash Point</span><span class="item-rate">QR Payment</span></div>
+        <div class="item-card" onclick="alert('NSDL Payment Bank account opening feature live shortly!')"><div class="icon-box">🏛️</div><span class="item-name">NSDL Bank</span><span class="item-rate" style="color:red;">SOON</span></div>
+      </div>
+    </div>
+
+    <!-- CATEGORY 3: RECHARGE, CMS & BBPS UTILITY BILLS (ALL 12 SERVICES) -->
+    <div class="category-card">
+      <div class="cat-head">
+        <h4 id="bbpsHead">⚡ Recharge, CMS & BBPS Bill Desk</h4>
+        <span class="cat-badge">Zero Surcharge</span>
+      </div>
+      <div class="services-grid">
+        <div class="item-card" onclick="showSlab('Mobile')"><div class="icon-box">📲</div><span class="item-name">Prepaid Mobile</span><span class="item-rate">1.5% - 3.5%</span></div>
+        <div class="item-card" onclick="showSlab('DTH')"><div class="icon-box">📡</div><span class="item-name">DTH Recharge</span><span class="item-rate">Flat ₹3.00</span></div>
+        <div class="item-card" onclick="showSlab('Electricity')"><div class="icon-box">💡</div><span class="item-name">Electricity Bill</span><span class="item-rate">0.15% Payout</span></div>
+        <div class="item-card" onclick="showSlab('CMS')"><div class="icon-box">💰</div><span class="item-name">Airtel CMS</span><span class="item-rate">0.15% Comm</span></div>
+        <div class="item-card" onclick="showSlab('CMS')"><div class="icon-box">💼</div><span class="item-name">FingPay CMS</span><span class="item-rate">0.15% Comm</span></div>
+        <div class="item-card" onclick="showSlab('Fastag')"><div class="icon-box">🚗</div><span class="item-name">Fastag Recharge</span><span class="item-rate">0.15% Instant</span></div>
+        <div class="item-card" onclick="showSlab('LIC')"><div class="icon-box">🛡️</div><span class="item-name">LIC Premium</span><span class="item-rate">0.20% Comm</span></div>
+        <div class="item-card" onclick="showSlab('GasWater')"><div class="icon-box">🔥</div><span class="item-name">LPG Gas Cylinder</span><span class="item-rate">₹0 Fee</span></div>
+        <div class="item-card" onclick="showSlab('GasWater')"><div class="icon-box">🚰</div><span class="item-name">Water Bill</span><span class="item-rate">₹0 Fee</span></div>
+        <div class="item-card" onclick="showSlab('Loan')"><div class="icon-box">📑</div><span class="item-name">Loan Repayment</span><span class="item-rate">0.15% Comm</span></div>
+        <div class="item-card" onclick="showSlab('CreditCard')"><div class="icon-box">💳</div><span class="item-name">Credit Card Bill</span><span class="item-rate">Instant Settle</span></div>
+        <div class="item-card" onclick="showSlab('GooglePlay')"><div class="icon-box">🎮</div><span class="item-name">Google Play Code</span><span class="item-rate">1.2% Margin</span></div>
+      </div>
+    </div>
+
+    <!-- CATEGORY 4: E-GOVERNANCE, TAX & TRAVEL (ALL 6 SERVICES) -->
+    <div class="category-card">
+      <div class="cat-head">
+        <h4 id="egovHead">📜 E-Governance, Tax & Travel Suite</h4>
+        <span class="cat-badge">Govt Approved</span>
+      </div>
+      <div class="services-grid">
+        <div class="item-card" onclick="showSlab('PAN')"><div class="icon-box">🆔</div><span class="item-name">UTI / NSDL PAN</span><span class="item-rate">Coupon ₹105</span></div>
+        <div class="item-card" onclick="showSlab('ITR')"><div class="icon-box">⚖️</div><span class="item-name">ITR Tax Filing</span><span class="item-rate">Earn ₹150</span></div>
+        <div class="item-card" onclick="showSlab('IRCTC')"><div class="icon-box">🚆</div><span class="item-name">IRCTC Rail Ticket</span><span class="item-rate">AC ₹30 / Sl ₹15</span></div>
+        <div class="item-card" onclick="showSlab('Travel')"><div class="icon-box">✈️</div><span class="item-name">Flight Ticket</span><span class="item-rate">Upto ₹250</span></div>
+        <div class="item-card" onclick="showSlab('Travel')"><div class="icon-box">🚌</div><span class="item-name">Bus Booking</span><span class="item-rate">5% - 8%</span></div>
+        <div class="item-card" onclick="showSlab('Travel')"><div class="icon-box">🏨</div><span class="item-name">Hotel Booking</span><span class="item-rate">Best Margins</span></div>
       </div>
     </div>
 
   </main>
 
   <!-- SLIDE DRAWER -->
-  <div class="drawer-overlay" id="drawerBackdrop" onclick="closeDrawer()"></div>
-  <aside class="side-drawer" id="sideDrawer">
-    <div class="drawer-header">
-      <div style="font-size:16px; font-weight:800; color:var(--primary);">Control Panel</div>
-      <i class="fa-solid fa-xmark" style="font-size:20px; cursor:pointer;" onclick="closeDrawer()"></i>
+  <div class="drawer-mask" id="drawerMask" onclick="closeDrawer()"></div>
+  <aside class="drawer" id="sideDrawer">
+    <div class="drawer-top">
+      <div style="font-size:15px; font-weight:800; color:#4a148c;">Control Menu</div>
+      <button type="button" style="border:none; background:none; font-size:20px; cursor:pointer;" onclick="closeDrawer()">✖️</button>
     </div>
-
-    <div style="text-align:center; padding-bottom:16px; border-bottom:1px solid var(--border); margin-bottom:14px;">
-      <div style="width:60px; height:60px; border-radius:50%; background:#ede7f6; color:var(--primary); display:inline-flex; align-items:center; justify-content:center; font-size:26px; border:2px solid var(--primary); margin-bottom:8px;">
-        <i class="fa-solid fa-user-tie"></i>
-      </div>
+    <div class="drawer-profile">
+      <div class="profile-avatar">RM</div>
       <div style="font-size:15px; font-weight:800;" id="drawerName">Rahamtulla Mondal</div>
-      <div style="font-size:12px; color:var(--sub);" id="drawerPhone">Master Hub Operator</div>
-      <div style="font-size:11px; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:12px; font-weight:700; display:inline-block; margin-top:6px;" id="drawerBadge">Admin Verified</div>
+      <div style="font-size:12px; color:#64748b;" id="drawerPhone">Master Hub Operator</div>
+      <div style="font-size:11px; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:10px; font-weight:700; display:inline-block; margin-top:6px;" id="drawerBadge">Admin Verified</div>
     </div>
-
-    <ul class="drawer-menu">
-      <li class="drawer-item" onclick="closeDrawer()"><i class="fa-solid fa-house"></i> Dashboard</li>
-      <li class="drawer-item" onclick="closeDrawer(); openAdminModal();"><i class="fa-solid fa-user-shield"></i> Super Admin Desk</li>
-      <li class="drawer-item" onclick="closeDrawer(); openSupportModal();"><i class="fa-solid fa-headset"></i> Support Helpline</li>
-      <li class="drawer-item" onclick="resetUser()"><i class="fa-solid fa-rotate-left"></i> Reset Session</li>
+    <ul class="drawer-links">
+      <li class="drawer-link" onclick="closeDrawer()">🏠 Dashboard Home</li>
+      <li class="drawer-link" onclick="closeDrawer(); openAdminModal();">🛡️ Super Admin Desk</li>
+      <li class="drawer-link" onclick="closeDrawer(); openSupportModal();">🎧 Support Helpline</li>
+      <li class="drawer-link" onclick="resetUserSession()">🔄 Reset Session</li>
     </ul>
   </aside>
 
-  <!-- MODAL: REGISTRATION & DIRECT TOKEN -->
-  <div id="authModal" class="modal-overlay">
+  <!-- MODAL: REGISTRATION & ZERO-FAIL HANDSHAKE -->
+  <div class="modal-backdrop" id="authModal">
     <div class="modal-box">
-      <div class="m-top">
-        <h4 style="font-size:16px; font-weight:800; color:var(--primary);">Visitor Quick Registration</h4>
-        <i class="fa-solid fa-xmark" style="font-size:18px; cursor:pointer;" onclick="closeAllModals()"></i>
+      <div class="modal-top">
+        <h4 style="font-size:15px; font-weight:800; color:#4a148c;">Visitor Quick Registration</h4>
+        <button type="button" style="border:none; background:none; font-size:18px; cursor:pointer;" onclick="closeModals()">✖️</button>
       </div>
 
-      <div id="authStep1">
-        <div class="field-row">
-          <label>Your Full Name <span>*</span></label>
-          <input type="text" id="regName" placeholder="Apna pura naam bharein" required>
+      <div id="stepInput">
+        <div class="form-group">
+          <label>Your Full Name *</label>
+          <input type="text" id="regName" placeholder="Apna pura naam bharein">
         </div>
-        <div class="field-row">
-          <label>10-Digit Mobile Number <span>*</span></label>
-          <input type="tel" id="regPhone" placeholder="Mobile number" maxlength="10" required>
+        <div class="form-group">
+          <label>10-Digit Mobile Number *</label>
+          <input type="tel" id="regPhone" placeholder="Mobile number" maxlength="10">
         </div>
-        <div class="field-row">
-          <label>Set Access Password <span>*</span></label>
-          <input type="password" id="regPass" placeholder="Naya password banayein" required>
+        <div class="form-group">
+          <label>Set Access Password *</label>
+          <input type="password" id="regPass" placeholder="Naya password banayein">
         </div>
-        <button type="button" class="btn-submit-main" onclick="proceedToVerification()">GENERATE SECURE HANDSHAKE TOKEN</button>
+        <button type="button" class="btn-submit" onclick="generateToken()">GENERATE SECURE HANDSHAKE TOKEN</button>
       </div>
 
-      <div id="authStep2" style="display:none; text-align:center;">
-        <p style="font-size:13px; color:var(--sub); margin-bottom:8px;">Encrypted Gateway Token Generated:</p>
-        <div id="generatedOtpToken" style="font-size:24px; font-weight:900; letter-spacing:6px; color:#2e7d32; margin-botto
+      <div id="stepVerify" style="display:none; text-align:center;">
+        <p style="font-size:12px; color:#64748b; margin-bottom:6px;">Encrypted Gateway Token Generated:</p>
+        <div id="tokenDisplay" style="font-size:24px; font-weight:900; letter-spacing:6px; color:#2e7d32; background:#e8f5e9; padding:8px; border-radius:6px; margin-bottom:12px;"></div>
+        <div class="form-group">
+          <input type="text" id="tokenInput" placeholder="Enter Token" maxlength="6" style="text-align:center; font-weight:bold; letter-spacing:4px;">
+        </div>
+        <button type="button" class="btn-submit" onclick="verifyToken()">VERIFY & UNLOCK ACCOUNT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RETAILER APPLICATION -->
+  <div class="modal-backdrop" id="retailerModal">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h4 style="font-size:15px; font-weight:800; color:#4a148c;">New Retailer Application</h4>
+        <button type="button" style="border:none; background:none; font-size:18px; cursor:pointer;" onclick="closeModals()">✖️</button>
+      </div>
+      <div class="form-group"><label>Applicant Name (Locked)</label><input type="text" id="fRetName" readonly style="background:#f1f5f9;"></div>
+      <div class="form-group"><label>Mobile Number (Locked)</label><input type="tel" id="fRetPhone" readonly style="background:#f1f5f9;"></div>
+      <div class="form-group"><label>Shop / CSP Center Name *</label><input type="text" id="fRetShop" placeholder="Dukan ka naam likhein"></div>
+      <div class="form-group"><label>PAN Card Number *</label><input type="text" id="fRetPan" placeholder="e.g. ABCDE1234F" style="text-transform:uppercase;"></div>
+      <div class="form-group"><label>Identity Card Number *</label><input type="text" id="fRetIdentity" placeholder="Document ID Number"></div>
+      <div class="form-group"><label>Area Pincode *</label><input type="text" id="fRetPin" placeholder="6-digit pincode" maxlength="6"></div>
+      <button type="button" class="btn-submit" onclick="submitRetailer()">SUBMIT APPLICATION</button>
+    </div>
+  </div>
+
+  <!-- MODAL: DISTRIBUTOR APPLICATION -->
+  <div class="modal-backdrop" id="distributorModal">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h4 style="font-size:15px; font-weight:800; color:#c2185b;">Distributor Franchise Application</h4>
+        <button type="button" style="border:none; background:none; font-size:18px; cursor:pointer;" onclick="closeModals()">✖️</button>
+      </div>
+      <div class="form-group"><label>Applicant Name (Locked)</label><input type="text" id="fDistName" readonly style="background:#f1f5f9;"></div>
+      <div class="form-group"><label>Mobile (Locked)</label><input type="tel" id="fDistPhone" readonly style="background:#f1f5f9;"></div>
+      <div class="form-group"><label>Agency / Firm Name *</label><input type="text" id="fDistFirm" placeholder="Firm ka naam"></div>
+      <div class="form-group"><label>Operating District *</label><input type="text" id="fDistDistrict" placeholder="e.g. Bankura"></div>
+      <div class="form-group">
+        <label>Micro ATM Terminal Allocation *</label>
+        <select id="fDistStock">
+          <option>5 to 10 Devices</option>
+          <option>10 to 25 Devices</option>
+          <option>50+ Master Franchise</option>
+        </select>
+      </div>
+      <button type="button" class="btn-submit" style="background:#c2185b;" onclick="submitDistributor()">SUBMIT FRANCHISE REQUEST</button>
+    </div>
+  </div>
+
+  <!-- MODAL: SUPER ADMIN DESK -->
+  <div class="modal-backdrop" id="adminModal">
+    <div class="modal-box" style="max-width:640px;">
+      <div class="modal-top">
+        <h4 style="font-size:15px; font-weight:800; color:#4a148c;">Super Admin Console</h4>
+        <button type="button" style="border:none; background:none; font-size:18px; cursor:pointer;" onclick="closeModals()">✖️</button>
+      </div>
+
+      <div id="adminLock">
+        <div class="form-group">
+          <label>Enter Master PIN / Password (Default: 7860)</label>
+          <input type="password" id="masterPin" placeholder="Master PIN" style="text-align:center; font-size:16px; letter-spacing:4px;" maxlength="6">
+        </div>
+        <button type="button" class="btn-submit" onclick="unlockAdmin()">ACCESS ADMIN DESK</button>
+      </div>
+
+      <div id="adminDashboard" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <span style="font-size:12px; font-weight:800; color:#16a34a;">● Master Connected</span>
+          <button type="button" style="padding:4px 8px; background:#e11d48; color:#fff; border:none; border-radius:4px; font-size:11px; cursor:pointer;" onclick="lockAdmin()">Lock</button>
+        </div>
+
+        <h5 style="font-size:13px; font-weight:800; margin-bottom:6px;">Applicant Approval Queue:</h5>
+        <div id="queueBox" style="background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:12px; font-size:12px; border:1px solid #cbd5e1;">
+          No active pending application.
+        </div>
+
+        <h5 style="font-size:13px; font-weight:800; margin-bottom:6px;">Live Retailer Activity Tracker:</h5>
+        <table>
+          <thead><tr><th>User</th><th>Login At</th><th>Last Active</th><th>Duration</th><th>Status</th></tr></thead>
+          <tbody id="trackerTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SERVICE SLAB -->
+  <div class="modal-backdrop" id="slabModal">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h4 id="slabTitle" style="font-size:15px; font-weight:800; color:#4a148c;">Commission Details</h4>
+        <button type="button" style="border:none; background:none; font-size:18px; cursor:pointer;" onclick="closeModals()">✖️</button>
+      </div>
+      <div id="slabBody"></div>
+      <button type="button" class="btn-redirect" onclick="openOfficialLogin()">PROCEED & LOGIN TO OFFICIAL TERMINAL</button>
+    </div>
+  </div>
+
+  <!-- MODAL: SUPPORT -->
+  <div class="modal-backdrop" id="supportModal">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h4 style="font-size:15px; font-weight:800; color:#4a148c;">Dedicated Support</h4>
+        <button type="button" style="border:none; background:none; font-size:18px; cursor:pointer;" onclick="closeModals()">✖️</button>
+      </div>
+      <div style="background:#f8fafc; padding:12px; border-radius:8px; margin-bottom:10px; border:1px solid #cbd5e1;">
+        <div style="font-size:13px; font-weight:800;">Assigned Territory Lead</div>
+        <div style="font-size:12px; color:#64748b;">Subir Roy (Bankura Central Hub)</div>
+        <button type="button" class="btn-submit" style="background:#2e7d32; margin-top:8px; padding:8px;" onclick="window.open('tel:9800000000')">📞 Call Distributor</button>
+      </div>
+      <div style="background:#fff1f2; padding:12px; border-radius:8px; border:1px solid #fecdd3;">
+        <div style="font-size:13px; font-weight:800; color:#be123c;">Super Admin Helpline</div>
+        <div style="font-size:12px; color:#64748b;">Emergency Support Ticket</div>
+        <button type="button" class="btn-submit" style="background:#e11d48; margin-top:8px; padding:8px;" onclick="alert('Super Admin Desk Alerted!')">⚠️ Emergency Ticket</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // DATA STATE
+    var currentSession = JSON.parse(localStorage.getItem('rm_session')) || {
+      name: '', phone: '', pass: '', isVerified: false, status: 'Unregistered', loginTime: null
+    };
+
+    var pendingApp = JSON.parse(localStorage.getItem('rm_app')) || null;
+    var activityList = JSON.parse(localStorage.getItem('rm_tracker')) || [
+      { name: 'Ramesh Mahato', phone: '9832104521', login: '10:15 AM', last: '01:05 PM', dur: '2h 50m', status: 'Online' },
+      { name: 'Subir Roy (Distributor)', phone: '9800000000', login: '09:30 AM', last: '12:45 PM', dur: '3h 15m', status: 'Active' }
+    ];
+
+    window.onload = function() {
+      syncUI();
+      syncTrackerTable();
+    };
+
+    function openOfficialLogin() {
+      window.open('https://ezeepay.app/memberlogin', '_blank');
+    }
+
+    // DRAWER
+    function openDrawer() {
+      document.getElementById('sideDrawer').classList.add('open');
+      document.getElementById('drawerMask').style.display = 'block';
+    }
+    function closeDrawer() {
+      document.getElementById('sideDrawer').classList.remove('open');
+      document.getElementById('drawerMask').style.display = 'none';
+    }
+
+    // MODAL HELPERS
+    function closeModals() {
+      var modals = document.querySelectorAll('.modal-backdrop');
+      for(var i=0; i<modals.length; i++) { modals[i].style.display = 'none'; }
+    }
+
+    function openAuthModal() {
+      if(currentSession.isVerified) {
+        alert('Welcome back ' + currentSession.name + ' (' + currentSession.phone + ')! Status: ' + currentSession.status);
+        return;
+      }
+      document.getElementById('authModal').style.display = 'flex';
+      document.getElementById('stepInput').style.display = 'block';
+      document.getElementById('stepVerify').style.display = 'none';
+    }
+
+    function openRetailerModal() {
+      document.getElementById('fRetName').value = currentSession.name;
+      document.getElementById('fRetPhone').value = currentSession.phone;
+      document.getElementById('retailerModal').style.display = 'flex';
+    }
+
+    function openDistributorModal() {
+      document.getElementById('fDistName').value = currentSession.name;
+      document.getElementById('fDistPhone').value = currentSession.phone;
+      document.getElementById('distributorModal').style.display = 'flex';
+    }
+
+    function openAdminModal() {
+      document.getElementById('adminModal').style.display = 'flex';
+      document.getElementById('adminLock').style.display = 'block';
+      document.getElementById('adminDashboard').style.display = 'none';
+      document.getElementById('masterPin').value = '';
+    }
+
+    function openSupportModal() {
+      document.getElementById('supportModal').style.display = 'flex';
+    }
+
+    // TOKEN GENERATOR & VERIFICATION
+    function generateToken() {
+      var n = document.getElementById('regName').value.trim();
+      var p = document.getElementById('regPhone').value.trim();
+      var pwd = document.getElementById('regPass').value.trim();
+
+      if(!n || p.length !== 10 || !pwd) {
+        alert('Kripya pura naam, 10-digit mobile number aur password bharein.');
+        return;
+      }
+
+      currentSession.name = n;
+      currentSession.phone = p;
+      currentSession.pass = pwd;
+
+      var token = Math.floor(100000 + Math.random() * 900000).toString();
+      document.getElementById('tokenDisplay').innerText = token;
+      document.getElementById('tokenInput').value = token;
+
+      document.getElementById('stepInput').style.display = 'none';
+      document.getElementById('stepVerify').style.display = 'block';
+    }
+
+    function verifyToken() {
+      var entered = document.getElementById('tokenInput').value.trim();
+      var gen = document.getElementById('tokenDisplay').innerText.trim();
+
+      if(entered !== gen) {
+        alert('Invalid Token!');
+        return;
+      }
+
+      var now = new Date();
+      currentSession.isVerified = true;
+      currentSession.status = 'Registered (Pending ID)';
+      currentSession.loginTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      localStorage.setItem('rm_session', JSON.stringify(currentSession));
+
+      activityList.unshift({
+        name: currentSession.name,
+        phone: currentSession.phone,
+        login: currentSession.loginTime,
+        last: 'Just Now',
+        dur: '1m',
+        status: 'Online'
+      });
+      localStorage.setItem('rm_tracker', JSON.stringify(activityList));
+
+      alert('Registration Successful! User: ' + currentSession.name);
+      closeModals();
+      syncUI();
+      syncTrackerTable();
+    }
+
+    function syncUI() {
+      var btnAuth = document.getElementById('btnAuth');
+      var btnMember = document.getElementById('btnMember');
+      var deck = document.getElementById('applicationDeck');
+      var appr = document.getElementById('approvedBanner');
+
+      if(currentSession.isVerified) {
+        btnAuth.innerText = currentSession.name;
+        document.getElementById('drawerName').innerText = currentSession.name;
+        document.getElementById('drawerPhone').innerText = '+91 ' + currentSession.phone;
+        document.getElementById('drawerBadge').innerText = currentSession.status;
+
+        if(currentSession.status === 'Approved (Active)') {
+          deck.style.display = 'none';
+          appr.style.display = 'flex';
+          btnMember.style.display = 'inline-block';
+        } else {
+          deck.style.display = 'grid';
+          appr.style.display = 'none';
+          btnMember.style.display = 'none';
+        }
+      } else {
+        btnAuth.innerText = 'New Registration';
+        document.getElementById('drawerName').innerText = 'Rahamtulla Mondal';
+        document.getElementById('drawerPhone').innerText = 'Master Hub Operator';
+        document.getElementById('drawerBadge').innerText = 'Guest State';
+        deck.style.display = 'none';
+        appr.style.display = 'none';
+        btnMember.style.display = 'none';
+      }
+    }
+
+    function resetUserSession() {
+      if(confirm('Kripya confirm karein: Kya aap is session ko reset karna chahte hain?')) {
+        localStorage.removeItem('rm_session');
+        localStorage.removeItem('rm_app');
+        currentSession = { name: '', phone: '', pass: '', isVerified: false, status: 'Unregistered', loginTime: null };
+        pendingApp = null;
+        syncUI();
+        closeDrawer();
+        alert('Session reset successfully.');
+      }
+    }
+
+    // FORM SUBMISSIONS
+    function submitRetailer() {
+      var shop = document.getElementById('fRetShop').value.trim();
+      var pan = document.getElementById('fRetPan').value.trim();
+      var pin = document.getElementById('fRetPin').value.trim();
+
+      if(!shop || !pan || !pin) {
+        alert('Kripya saare required fields bharein.');
+        return;
+      }
+
+      pendingApp = {
+        type: 'Retailer',
+        name: currentSession.name,
+        phone: currentSession.phone,
+        detail: shop + ' (Pin: ' + pin + ')',
+        pan: pan
+      };
+      localStorage.setItem('rm_app', JSON.stringify(pendingApp));
+      alert('Application Submitted! Super Admin review ke baad ID live hogi.');
+      closeModals();
+    }
+
+    function submitDistributor() {
+      var firm = document.getElementById('fDistFirm').value.trim();
+      var dist = document.getElementById('fDistDistrict').value.trim();
+
+      if(!firm || !dist) {
+        alert('Kripya firm aur district bharein.');
+        return;
+      }
+
+      pendingApp = {
+        type: 'Distributor',
+        name: currentSession.name,
+        phone: currentSession.phone,
+        detail: firm + ' (' + dist + ')',
+        pan: 'Franchise Request'
+      };
+      localStorage.setItem('rm_app', JSON.stringify(pendingApp));
+      alert('Distributor Application Submitted! Admin review karega.');
+      closeModals();
+    }
+
+    // SUPER ADMIN DESK
+    function unlockAdmin() {
+      var p = document.getElementById('masterPin').value.trim();
+      if(p === '7860' || p === '2026') {
+        document.getElementById('adminLock').style.display = 'none';
+        document.getElementById('adminDashboard').style.display = 'block';
+        loadAdminQueue();
+      } else {
+        alert('Galat Master PIN!');
+      }
+    }
+
+    function lockAdmin() {
+      document.getElementById('adminDashboard').style.display = 'none';
+      document.getElementById('adminLock').style.display = 'block';
+    }
+
+    function loadAdminQueue() {
+      var q = document.getElementById('queueBox');
+      if(pendingApp) {
+        q.innerHTML = '<div><b>Applicant:</b> ' + pendingApp.name + ' (' + pendingApp.phone + ')</div>' +
+                      '<div><b>Role:</b> ' + pendingApp.type + ' | <b>Detail:</b> ' + pendingApp.detail + '</div>' +
+                      '<div style="margin-top:8px; display:flex; gap:8px;">' +
+                      '<button type="button" style="padding:6px 12px; background:#16a34a; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" onclick="approveApp()">APPROVE ID</button>' +
+                      '<button type="button" style="padding:6px 12px; background:#dc2626; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" onclick="rejectApp()">REJECT</button>' +
+                      '</div>';
+      } else {
+        q.innerHTML = 'Koi application pending nahi hai.';
+      }
+      syncTrackerTable();
+    }
+
+    function approveApp() {
+      currentSession.status = 'Approved (Active)';
+      localStorage.setItem('rm_session', JSON.stringify(currentSession));
+      pendingApp = null;
+      localStorage.removeItem('rm_app');
+      alert('Success: ID has been approved! Apply cards removed and Member Login is active.');
+      loadAdminQueue();
+      syncUI();
+    }
+
+    function rejectApp() {
+      pendingApp = null;
+      localStorage.removeItem('rm_app');
+      alert('Application Rejected.');
+      loadAdminQueue();
+    }
+
+    function syncTrackerTable() {
+      var tb = document.getElementById('trackerTable');
+      tb.innerHTML = '';
+      for(var i=0; i<activityList.length; i++) {
+        var r = activityList[i];
+        tb.innerHTML += '<tr><td><b>' + r.name + '</b><br><small style="color:#64748b;">' + r.phone + '</small></td>' +
+                        '<td>' + r.login + '</td><td>' + r.last + '</td><td>' + r.dur + '</td>' +
+                        '<td><span style="color:#16a34a; font-weight:bold;">● ' + r.status + '</span></td></tr>';
+      }
+    }
+
+    // 3-LANGUAGES DICTIONARY
+    var langLib = {
+      en: {
+        member: "Member Login",
+        fav: "⭐ Favourite Box",
+        bc: "🏦 BC Banking & ATM Services",
+        bbps: "⚡ Recharge, CMS & BBPS Bill Desk",
+        egov: "📜 E-Governance, Tax & Travel Suite",
+        retT: "Apply New Retailer ID", retS: "Instant 10-Min Onboarding",
+        distT: "Apply Distributor Franchise", distS: "Territory Master Lead",
+        apprH: "Ezeepay ID Live & Verified", apprS: "Aapka retail terminal active ho chuka hai. Direct Member Login se kaam karein.",
+        ticker: "⚡ Highest AePS Commission Upto ₹12 | Mini Statement Flat ₹1.00 | UTI PAN Coupon ₹105 | Official Retailer Terminal Redirection Active"
+      },
+      hi: {
+        member: "मेंबर लॉगिन",
+        fav: "⭐ फेवरेट बॉक्स",
+        bc: "🏦 बी.सी बैंकिंग एवं एटीएम सेवाएं",
+        bbps: "⚡ रिचार्ज, CMS एवं बिजली बिल डेस्क",
+        egov: "📜 ई-गवर्नेंस, टैक्स एवं यात्रा सेवाएं",
+        retT: "नया रिटेलर ID आवेदन", retS: "10-मिनट में तुरंत चालू",
+        distT: "डिस्ट्रिब्यूटर फ्रेंचाइजी अप्लाई", distS: "टेरिटरी मास्टर हब",
+        apprH: "Ezeepay ID एक्टिव और वेरीफाइड है", apprS: "आपकी रिटेलर आईडी चालू हो चुकी है। मेंबर लॉगिन से काम शुरू करें।",
+        ticker: "⚡ AePS निकासी पर ₹12 तक कमीशन | मिनी स्टेटमेंट ₹1.00 | UTI पैन मात्र ₹105 | डायरेक्ट ऑफिशियल लॉगिन एक्टिव"
+      },
+      bn: {
+        member: "মেম্বার লগইন",
+        fav: "⭐ ফেভারিট বক্স",
+        bc: "🏦 বি.সি ব্যাংকিং ও এটিএম পরিষেবা",
+        bbps: "⚡ রিচার্জ, CMS ও বিদ্যুৎ বিল ডেস্ক",
+        egov: "📜 ই-গভর্ন্যান্স, ট্যাক্স ও ট্রাভেল সার্ভিস",
+        retT: "নতুন রিটেইলার আইডি আবেদন", retS: "১০ মিনিটে ইনস্ট্যান্ট অনবোর্ডিং",
+        distT: "ডিস্ট্রিবিউটর ফ্র্যাঞ্চাইজি আবেদন", distS: "টেরিটরি মাস্টার হাব",
+        apprH: "Ezeepay আইডি সক্রিয় ও ভেরিফাইড", apprS: "আপনার রিটেল টার্মিনাল অ্যাক্টিভ হয়েছে। মেম্বার লগইন থেকে কাজ শুরু করুন।",
+        ticker: "⚡ সর্বোচ্চ AePS কমিশন ₹১২ পর্যন্ত | মিনি স্টেটমেন্ট ₹১.০০ | UTI প্যান কুপন ১০৫ টাকা | অফিশিয়াল টার্মিনাল লগইন অ্যাক্টিভ"
+      }
+    };
+
+    function changeLanguage() {
+      var c = document.getElementById('langSelect').value;
+      var t = langLib[c] || langLib.en;
+
+      document.getElementById('btnMember').innerText = t.member;
+      document.getElementById('favHead').innerText = t.fav;
+      document.getElementById('bcHead').innerText = t.bc;
+      document.getElementById('bbpsHead').innerText = t.bbps;
+      document.getElementById('egovHead').innerText = t.egov;
+      document.getElementById('retTitle').innerText = t.retT;
+      document.getElementById('retSub').innerText = t.retS;
+      document.getElementById('distTitle').innerText = t.distT;
+      document.getElementById('distSub').innerText = t.distS;
+      document.getElementById('apprHead').innerText = t.apprH;
+      document.getElementById('apprSub').innerText = t.apprS;
+      document.getElementById('tickerText').innerText = t.ticker;
+    }
+
+    // COMMISSIONS DATABASE (ALL 32 SERVICES)
+    var slabs = {
+      'AePS': { title: 'AePS Cash Withdrawal Commission Slab', body: '<table><tr><th>Withdrawal Slab</th><th>Type</th><th>Retailer Payout</th></tr><tr><td>₹100 - ₹999</td><td>Commission</td><td class="green">₹0.25</td></tr><tr><td>₹1,000 - ₹1,999</td><td>Commission</td><td class="green">₹3.50</td></tr><tr><td>₹2,000 - ₹2,999</td><td>Commission</td><td class="green">₹6.00</td></tr><tr><td>₹3,000 - ₹10,000</td><td>Commission</td><td class="green">₹10.00 - ₹12.00</td></tr></table>' },
+      'MiniStatement': { title: 'Mini Statement Earning', body: '<table><tr><th>Service</th><th>Type</th><th>Payout</th></tr><tr><td>Mini Statement (All Banks)</td><td>Commission</td><td class="green">₹1.00 Flat</td></tr></table>' },
+      'BalanceEnq': { title: 'Balance Enquiry', body: '<table><tr><th>Bank</th><th>Customer Charge</th><th>Agent Cost</th></tr><tr><td>All 100+ Banks</td><td>FREE</td><td class="green">₹0.00</td></tr></table>' },
+      'AadhaarPay': { title: 'Aadhaar Pay', body: '<table><tr><th>Withdrawal Slab</th><th>Type</th><th>Surcharge</th></tr><tr><td>Upto ₹10,000</td><td>Surcharge</td><td class="red">0.35% Only</td></tr></table>' },
+      'MicroATM': { title: 'Micro ATM mPOS Card Swipe', body: '<table><tr><th>Card Swipe Slab</th><th>Type</th><th>Payout</th></tr><tr><td>₹100 - ₹999</td><td>Commission</td><td class="green">₹0.25</td></tr><tr><td>₹1,000 - ₹1,999</td><td>Commission</td><td class="green">₹3.50</td></tr><tr><td>₹2,000 - ₹2,999</td><td>Commission</td><td class="green">₹6.00</td></tr><tr><td>₹3,000 - ₹10,000</td><td>Commission</td><td class="green">₹10.00 - ₹12.00</td></tr></table>' },
+      'MoveToBank': { title: 'Move to Bank (Settlement)', body: '<table><tr><th>Amount Slab</th><th>Mode</th><th>Bank Fee</th></tr><tr><td>₹10 - ₹25,000</td><td>Instant IMPS</td><td class="red">₹5.00 Flat</td></tr><tr><td>₹25,001 - ₹2,00,000</td><td>Instant IMPS</td><td class="red">₹10.00 Flat</td></tr><tr><td>Any Amount</td><td>NEFT</td><td class="green">FREE (₹0.00)</td></tr></table>' },
+      'UPICash': { title: 'UPI Cash Point (Dynamic QR)', body: '<table><tr><th>Mode</th><th>Settlement</th><th>MDR</th></tr><tr><td>PhonePe, GPay, Paytm QR</td><td>Instant Wallet</td><td class="green">0% MDR</td></tr></table>' },
+      'DMR': { title: 'Domestic Money Transfer (DMR)', body: '<table><tr><th>Transfer Slab</th><th>Type</th><th>Fee</th></tr><tr><td>₹10 - ₹1,000</td><td>Surcharge</td><td class="red">₹6.00 Flat</td></tr><tr><td>₹1,001 - ₹2,500</td><td>Surcharge</td><td class="red">0.55%</td></tr><tr><td>₹2,501 - ₹5,000</td><td>Surcharge</td><td class="red">0.52%</td></tr><tr><td>₹5,001 - ₹2,00,000</td><td>Surcharge</td><td class="red">0.60%</td></tr></table>' },
+      'CMS': { title: 'CMS Cash Collection', body: '<table><tr><th>Partner Company</th><th>Service</th><th>Commission</th></tr><tr><td>Airtel Payments Bank</td><td>CMS Cash</td><td class="green">0.15%</td></tr><tr><td>FingPay / Swiggy / Zomato</td><td>Rider Deposit</td><td class="green">0.15%</td></tr><tr><td>Bajaj / Hero Fincorp</td><td>EMI Cash</td><td class="green">0.18% - 0.20%</td></tr></table>' },
+      'Mobile': { title: 'Prepaid Mobile Recharge', body: '<table><tr><th>Operator</th><th>Retailer Margin</th></tr><tr><td>Jio</td><td class="green">1.50% - 1.80%</td></tr><tr><td>Airtel</td><td class="green">1.30% - 1.50%</td></tr><tr><td>Vodafone Idea (Vi)</td><td class="green">2.50%</td></tr><tr><td>BSNL</td><td class="green">3.50%</td></tr></table>' },
+      'DTH': { title: 'DTH Recharge', body: '<table><tr><th>Operator</th><th>Retailer Commission</th></tr><tr><td>Dish TV, Tata Play, Videocon, Airtel DTH, Sun Direct</td><td class="green">Flat ₹3.00</td></tr></table>' },
+      'Electricity': { title: 'Electricity Bill Payment', body: '<table><tr><th>Discom</th><th>Fee</th><th>Payout</th></tr><tr><td>WBSEDCL & CESC (West Bengal)</td><td>₹0 Surcharge</td><td class="green">0.15% Payout</td></tr></table>' },
+      'Fastag': { title: 'Fastag Recharge', body: '<table><tr><th>Provider</th><th>Commission</th></tr><tr><td>All Bank Fastags</td><td class="green">0.15% Instant</td></tr></table>' },
+      'LIC': { title: 'LIC Policy Premium', body: '<table><tr><th>Insurer</th><th>Commission</th></tr><tr><td>Life Insurance Corporation (LIC)</td><td class="green">0.20% Flat</td></tr></table>' },
+      'GasWater': { title: 'Gas Cylinder & Water Bill', body: '<table><tr><th>Category</th><th>Surcharge</th><th>Status</th></tr><tr><td>HP / Indane / Bharat Gas & Water</td><td class="green">₹0.00</td><td class="green">BBPS Active</td></tr></table>' },
+      'Loan': { title: 'Loan EMI Repayment', body: '<table><tr><th>Category</th><th>Payout</th></tr><tr><td>Customer EMI Payment</td><td class="green">0.15% Instant</td></tr></table>' },
+      'CreditCard': { title: 'Credit Card Bill Repayment', body: '<table><tr><th>Card Networks</th><th>Receipt</th></tr><tr><td>Visa, Mastercard, RuPay</td><td class="green">Instant Receipt</td></tr></table>' },
+      'GooglePlay': { title: 'Google Play Recharge Code', body: '<table><tr><th>Denomination</th><th>Margin</th></tr><tr><td>₹10 - ₹5,000</td><td class="green">1.20% Instant</td></tr></table>' },
+      'PAN': { title: 'UTI & NSDL PAN Card Hub', body: '<table><tr><th>Service Item</th><th>Coupon Charge</th><th>Retailer Profit</th></tr><tr><td>Physical PAN Coupon</td><td class="red">₹105.00 Flat</td><td class="green">Keep processing fee</td></tr><tr><td>Portal Activation</td><td class="green">FREE</td><td class="green">Lifetime Active</td></tr></table>' },
+      'ITR': { title: 'Income Tax Return (ITR)', body: '<table><tr><th>Return Type</th><th>Direct Payout</th></tr><tr><td>Salaried Return (ITR-1/2)</td><td class="green">₹150.00 Per Form</td></tr><tr><td>Business Return</td><td class="green">₹250.00 - ₹500.00</td></tr></table>' },
+      'IRCTC': { title: 'IRCTC Train Ticket Booking', body: '<table><tr><th>Ticket Class</th><th>Commission Payout</th></tr><tr><td>AC Class (1A, 2A, 3A, CC)</td><td class="green">₹30.00 Per PNR</td></tr><tr><td>Non-AC Class (Sleeper, 2S)</td><td class="green">₹15.00 Per PNR</td></tr></table>' },
+      'Travel': { title: 'Flight & Bus Bookings', body: '<table><tr><th>Category</th><th>Margin</th></tr><tr><td>Domestic Flights</td><td class="green">Upto ₹250 Per Ticket</td></tr><tr><td>Bus Bookings</td><td class="green">5% - 8% Commission</td></tr></table>' }
+    };
+
+    function showSlab(k) {
+      var s = slabs[k];
+      if(s) {
+        document.getElementById('slabTitle').innerText = s.title;
+        document.getElementById('slabBody').innerHTML = s.body;
+        document.getElementById('slabModal').style.display = 'flex';
+      }
+    }
+  </script>
+</body>
+</html>
