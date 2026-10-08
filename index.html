@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RM Digital Master Gateway</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4a148c;
+      --primary-light: #7b1fa2;
+      --accent: #00c853;
+      --bg: #f4f6fa;
+      --card: #ffffff;
+      --border: #e0e0e0;
+      --text: #212121;
+      --subtext: #616161;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
+    .viewport { width: 100%; max-width: 480px; background: #fff; min-height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.1); padding-bottom: 80px; }
+
+    /* --- CYBER VAULT GATE LOGIN --- */
+    .vault-screen {
+      position: fixed; inset: 0; z-index: 999; background: radial-gradient(circle at center, #1a0033 0%, #0d001a 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; color: #fff;
+      transition: transform 0.7s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease;
+    }
+    .vault-screen.open { transform: scale(1.1); opacity: 0; pointer-events: none; }
+    .biometric-box {
+      width: 90px; height: 90px; border-radius: 50%; border: 2px dashed #bb86fc; display: flex; align-items: center;
+      justify-content: center; font-size: 40px; color: #bb86fc; margin-bottom: 20px; position: relative;
+    }
+    .biometric-box.scanning::after {
+      content: ''; position: absolute; width: 100%; height: 2px; background: #00e676;
+      animation: scan 1.2s infinite alternate ease-in-out;
+    }
+    @keyframes scan { from { top: 10%; } to { top: 90%; } }
+    .vault-card { width: 100%; max-width: 360px; background: rgba(255,255,255,0.06); padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px); }
+    .vault-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #7b1fa2; background: rgba(0,0,0,0.3); color: #fff; font-size: 15px; margin-bottom: 12px; outline: none; }
+    .btn-vault { width: 100%; padding: 12px; border-radius: 8px; background: var(--accent); color: #000; font-weight: 800; border: none; cursor: pointer; font-size: 15px; }
+
+    /* --- HOME INTERFACE --- */
+    .top-header { background: var(--primary); color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 100; }
+    .header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .brand { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
+    .wallet-banner { background: rgba(255,255,255,0.12); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .btn-add { background: var(--accent); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; }
+    .marquee { background: #e8f5e9; color: #2e7d32; font-size: 11px; font-weight: 700; padding: 6px 12px; }
+
+    /* Promos */
+    .promo-box { padding: 12px 16px 4px; }
+    .promo-card { background: linear-gradient(135deg, #4a148c 0%, #311b92 100%); color: #fff; padding: 14px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .promo-tag { background: #ff9800; color: #000; font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; }
+
+    /* Dual Hubs */
+    .onboarding-hub { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 16px; }
+    .hub-card { border: 1.5px dashed var(--primary-light); background: #f3e5f5; padding: 12px; border-radius: 12px; text-align: center; cursor: pointer; }
+    .hub-card h4 { font-size: 12px; font-weight: 800; color: var(--primary); margin-top: 4px; }
+
+    /* Service Sections */
+    .section-title { font-size: 13px; font-weight: 800; color: var(--primary); padding: 14px 16px 8px; display: flex; align-items: center; gap: 6px; }
+    .service-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 16px; }
+    .service-card { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; }
+    .icon-box { width: 44px; height: 44px; background: #ede7f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--primary); margin-bottom: 4px; }
+    .service-label { font-size: 10px; font-weight: 600; color: #424242; line-height: 1.2; }
+
+    /* Floating Support */
+    .support-bar { margin: 16px; background: #e8eaf6; border: 1px solid #c5cae9; border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; align-items: center; }
+
+    /* Modal */
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: flex-end; justify-content: center; }
+    .modal-sheet { background: #fff; width: 100%; max-width: 480px; border-radius: 20px 20px 0 0; padding: 20px; max-height: 80vh; overflow-y: auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #f5f5f5; }
+  </style>
+</head>
+<body>
+
+<div class="viewport">
+
+  <!-- 1. CYBER VAULT LOGIN OVERLAY -->
+  <div id="vaultGate" class="vault-screen">
+    <div class="biometric-box" id="bioBox"><i class="fa-solid fa-fingerprint"></i></div>
+    <div class="vault-card">
+      <h3 style="font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 6px;">Biometric Vault Node</h3>
+      <p style="font-size: 12px; color: #bbb; text-align: center; margin-bottom: 16px;">Registered Mobile Number Daalkar Vault Unlock Karein</p>
+      <input type="tel" id="userMobile" class="vault-input" placeholder="10 Digit Mobile Number" maxlength="10">
+      <div id="scanMsg" style="font-size: 12px; color: #00e676; margin-bottom: 10px; text-align: center; display: none;">Authenticating Node...</div>
+      <button class="btn-vault" onclick="unlockVault()">ACCESS GATEWAY</button>
+    </div>
+  </div>
+
+  <!-- 2. HOME APP BAR -->
+  <div class="top-header">
+    <div class="header-nav">
+      <div class="brand"><i class="fa-solid fa-bars"></i> &nbsp;ezeepay®</div>
+      <div><i class="fa-solid fa-bell"></i> &nbsp;&nbsp;<i class="fa-solid fa-circle-user" onclick="alert('Session Node: Active | RM Master Portal')"></i></div>
+    </div>
+    <div class="wallet-banner">
+      <div>
+        <div style="font-size: 17px; font-weight: 800;">₹ 5,085.93</div>
+        <div style="font-size: 10px; opacity: 0.8;" id="shopTag">RM Digital Store</div>
+      </div>
+      <button class="btn-add" onclick="window.open('https://ezeepay.app/','_blank')">Add Money</button>
+    </div>
+  </div>
+
+  <div class="marquee">
+    <marquee scrollamount="4">UPI Cash Point & AePS Active | Mini Statement Flat ₹1.00 | DTH Flat ₹3.00 Commission</marquee>
+  </div>
+
+  <!-- 3. MOTIVATION BANNER -->
+  <div class="promo-box">
+    <div class="promo-card">
+      <div>
+        <h4 style="font-size: 14px; font-weight: 800;">Super Prime Offer</h4>
+        <p style="font-size: 11px; opacity: 0.85; margin-top: 2px;">12 Mahine plan lene par Micro ATM FREE!</p>
+      </div>
+      <span class="promo-tag">TARGET 2026</span>
+    </div>
+  </div>
+
+  <!-- 4. DUAL ONBOARDING APPLICATIONS -->
+  <div class="onboarding-hub">
+    <div class="hub-card" onclick="openApplyModal('Retailer')">
+      <i class="fa-solid fa-store" style="color: var(--primary); font-size: 20px;"></i>
+      <h4>New Retailer ID</h4>
+      <p style="font-size: 10px; color: var(--subtext); margin-top: 2px;">Apply 10-Min Setup</p>
+    </div>
+    <div class="hub-card" onclick="openApplyModal('Distributor')">
+      <i class="fa-solid fa-building-user" style="color: #c2185b; font-size: 20px;"></i>
+      <h4 style="color: #c2185b;">New Distributor</h4>
+      <p style="font-size: 10px; color: var(--subtext); margin-top: 2px;">Area Master Franchise</p>
+    </div>
+  </div>
+
+  <!-- 5. BC BANKING SERVICES GRID -->
+  <div class="section-title"><i class="fa-solid fa-building-columns"></i> BC Banking Services</div>
+  <div class="service-grid">
+    <div class="service-card" onclick="launchBanking('AePS Cash Withdrawal')">
+      <div class="icon-box"><i class="fa-solid fa-fingerprint"></i></div>
+      <span class="service-label">AePS Cash</span>
+    </div>
+    <div class="service-card" onclick="showCommission('Mini Statement')">
+      <div class="icon-box"><i class="fa-solid fa-receipt"></i></div>
+      <span class="service-label">Mini Statement</span>
+    </div>
+    <div class="service-card" onclick="launchBanking('Balance Enquiry')">
+      <div class="icon-box"><i class="fa-solid fa-magnifying-glass-dollar"></i></div>
+      <span class="service-label">Balance Enq.</span>
+    </div>
+    <div class="service-card" onclick="launchBanking('Cash Deposit')">
+      <div class="icon-box"><i class="fa-solid fa-money-bill-transfer"></i></div>
+      <span class="service-label">Cash Deposit</span>
+    </div>
+    <div class="service-card" onclick="launchBanking('Aadhaar Pay')">
+      <div class="icon-box"><i class="fa-solid fa-id-card-clip"></i></div>
+      <span class="service-label">Aadhaar Pay</span>
+    </div>
+    <div class="service-card" onclick="launchBanking('Micro ATM')">
+      <div class="icon-box"><i class="fa-solid fa-calculator"></i></div>
+      <span class="service-label">Micro ATM</span>
+    </div>
+    <div class="service-card" onclick="launchBanking('Move to Bank')">
+      <div class="icon-box"><i class="fa-solid fa-paper-plane"></i></div>
+      <span class="service-label">Move to Bank</span>
+    </div>
+    <div class="service-card" onclick="alert('NSDL Payment Bank Seva Jald Hi Live Hogi!')">
+      <div class="icon-box" style="position:relative;">
+        <i class="fa-solid fa-landmark"></i>
+        <span style="position:absolute; top:-4px; right:-6px; background:red; color:#fff; font-size:7px; padding:1px 3px; border-radius:3px;">SOON</span>
+      </div>
+      <span class="service-label">NSDL Bank</span>
+    </div>
+  </div>
+
+  <!-- 6. MONEY TRANSFER & CMS -->
+  <div class="section-title"><i class="fa-solid fa-hand-holding-dollar"></i> Money Transfer & CMS</div>
+  <div class="service-grid">
+    <div class="service-card" onclick="showCommission('DMR')">
+      <div class="icon-box"><i class="fa-solid fa-money-bill-wave"></i></div>
+      <span class="service-label">DMR Transfer</span>
+    </div>
+    <div class="service-card" onclick="launchBanking('UPI Cash Point')">
+      <div class="icon-box"><i class="fa-solid fa-qrcode"></i></div>
+      <span class="service-label">UPI Cash</span>
+    </div>
+    <div class="service-card" onclick="launchBanking('Airtel CMS')">
+      <div class="icon-box"><i class="fa-solid fa-tower-broadcast"></i></div>
+      <span class="service-label">Airtel CMS</span>
+    </div>
+    <div class="service-card" onclick="launchBanking('FingPay CMS')">
+      <div class="icon-box"><i class="fa-solid fa-network-wired"></i></div>
+      <span class="service-label">FingPay CMS</span>
+    </div>
+  </div>
+
+  <!-- 7. RECHARGE & BBPS UTILITIES -->
+  <div class="section-title"><i class="fa-solid fa-bolt"></i> Recharge & Utilities</div>
+  <div class="service-grid">
+    <div class="service-card" onclick="launchBanking('Mobile Recharge')">
+      <div class="icon-box"><i class="fa-solid fa-mobile-screen-button"></i></div>
+      <span class="service-label">Prepaid</span>
+    </div>
+    <div class="service-card" onclick="showCommission('DTH')">
+      <div class="icon-box"><i class="fa-solid fa-satellite-dish"></i></div>
+      <span class="service-label">DTH Rech.</span>
+    </div>
+    <div class="service-card" onclick="showCommission('Electricity')">
+      <div class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+      <span class="service-label">Electricity</span>
+    </div>
+    <div class="service-card" onclick="showCommission('PAN')">
+      <div class="icon-box"><i class="fa-solid fa-address-card"></i></div>
+      <span class="service-label">UTI PAN</span>
+    </div>
+  </div>
+
+  <!-- 8. SUPPORT & ESCALATION -->
+  <div class="support-bar">
+    <div>
+      <div style="font-size: 12px; font-weight: 800;">Dedicated Area Support</div>
+      <div style="font-size: 10px; color: var(--subtext);">Mapped Lead: Subir Roy</div>
+    </div>
+    <div style="display: flex; gap: 6px;">
+      <button style="padding: 6px 10px; background: #2e7d32; color:#fff; border:none; border-radius:6px; font-size:11px;" onclick="window.open('tel:9800000000')"><i class="fa-solid fa-phone"></i></button>
+      <button style="padding: 6px 10px; background: #c62828; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700;" onclick="escalateAdmin()">Alert Admin</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- COMMISSION SLAB MODAL -->
+<div id="modalBox" class="modal">
+  <div class="modal-sheet">
+    <div style="display: flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h4 id="modalHeading" style="font-size: 15px; font-weight:800; color:var(--primary);">Commission Details</h4>
+      <i class="fa-solid fa-xmark" style="font-size:18px; cursor:pointer;" onclick="closeModal()"></i>
+    </div>
+    <div id="modalData"></div>
+  </div>
+</div>
+
+<script>
+  function unlockVault() {
+    const mob = document.getElementById('userMobile').value.trim();
+    if(mob.length !== 10) { alert('10-digit mobile number bharein.'); return; }
+
+    const box = document.getElementById('bioBox');
+    const msg = document.getElementById('scanMsg');
+    box.classList.add('scanning');
+    msg.style.display = 'block';
+
+    setTimeout(() => {
+      document.getElementById('vaultGate').classList.add('open');
+      document.getElementById('shopTag').innerText = 'RM Cyber Point (' + mob + ')';
+    }, 1000);
+  }
+
+  function launchBanking(name) {
+    alert('Security Handshake: ' + name + ' session logged. Official Ezeepay Core Banking open ho raha hai...');
+    window.open('https://ezeepay.app/', '_blank');
+  }
+
+  const slabs = {
+    'Mini Statement': '<table><tr><th>Service</th><th>Type</th><th>Payout</th></tr><tr><td>Mini Statement</td><td>Commission</td><td>₹1.00 Flat</td></tr></table>',
+    'DMR': '<table><tr><th>Slab Amount</th><th>Type</th><th>Charge</th></tr><tr><td>₹1 - ₹9</td><td>Surcharge</td><td>₹3 Flat</td></tr><tr><td>₹10 - ₹1,000</td><td>Surcharge</td><td>₹6 Flat</td></tr><tr><td>₹1,001 - ₹2,500</td><td>Surcharge</td><td>0.55%</td></tr><tr><td>₹2,501 - ₹5,000</td><td>Surcharge</td><td>0.52%</td></tr><tr><td>₹5,001 - ₹2,00,000</td><td>Surcharge</td><td>0.60%</td></tr></table>',
+    'DTH': '<table><tr><th>Operator</th><th>Commission</th></tr><tr><td>Dish TV / Tata Play / Videocon / Airtel</td><td>₹3.00 Flat</td></tr></table>',
+    'Electricity': '<table><tr><th>Discom</th><th>Commission</th></tr><tr><td>WBSEDCL / CESC / Tata Power</td><td>₹0.00 (Convenience Pass)</td></tr></table>',
+    'PAN': '<table><tr><th>Item</th><th>Fee</th></tr><tr><td>Agent Registration</td><td>₹0.00</td></tr><tr><td>UTI Coupon</td><td>₹105.00 Flat</td></tr></table>'
+  };
+
+  function showCommission(key) {
+    document.getElementById('modalHeading').innerText = key + ' Commission Structure';
+    document.getElementById('modalData').innerHTML = slabs[key] || '<p>Slab live hai.</p>';
+    document.getElementById('modalBox').style.display = 'flex';
+  }
+
+  function closeModal() { document.getElementById('modalBox').style.display = 'none'; }
+
+  function openApplyModal(role) {
+    alert(role + ' Application Hub: Pincode mapping desk se form auto-route ho jayega.');
+  }
+
+  function escalateAdmin() {
+    alert('Distributor Escalation: Central Admin desk ko emergency ticket send kar diya gaya hai!');
+  }
+</script>
+
+</body>
+</html>
