@@ -713,21 +713,37 @@ function submitDistributor() {
     }
 
     function approveApp() {
-      currentSession.status = 'Approved (Active)';
-      localStorage.setItem('rm_session', JSON.stringify(currentSession));
-      pendingApp = null;
-      localStorage.removeItem('rm_app');
-      alert('Success: ID has been approved! Apply cards removed and Member Login is active.');
-      loadAdminQueue();
-      syncUI();
-    }
+  if (!pendingApp) return;
 
-    function rejectApp() {
-      pendingApp = null;
-      localStorage.removeItem('rm_app');
-      alert('Application Rejected.');
-      loadAdminQueue();
-    }
+  var approvedMember = {
+    name: pendingApp.name,
+    phone: pendingApp.phone,
+    type: pendingApp.type,
+    shop: pendingApp.shop,
+    pan: pendingApp.pan,
+    approvedOn: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+  };
+
+  approvedUsers.unshift(approvedMember);
+  localStorage.setItem('rm_approved_users', JSON.stringify(approvedUsers));
+
+  currentSession.status = 'Approved (Active)';
+  localStorage.setItem('rm_session', JSON.stringify(currentSession));
+
+  pendingApp = null;
+  localStorage.removeItem('rm_app');
+
+  alert('Success: ID Approve ho chuki hai! Database me record save ho gaya.');
+  loadAdminQueue();
+  syncUI();
+}
+
+function rejectApp() {
+  pendingApp = null;
+  localStorage.removeItem('rm_app');
+  alert('Application Reject kar di gayi.');
+  loadAdminQueue();
+}
 
     function syncTrackerTable() {
       var tb = document.getElementById('trackerTable');
